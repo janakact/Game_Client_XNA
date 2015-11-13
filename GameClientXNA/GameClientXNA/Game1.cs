@@ -16,8 +16,18 @@ namespace GameClientXNA
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        //Comunicator
+        NetworkClient networkClient;
+
+        //Game Details
+        GameDetail game;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        GraphicsDevice device;
+
+        //Font to draw
+        SpriteFont font;
 
         public Game1()
         {
@@ -34,6 +44,22 @@ namespace GameClientXNA
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            //Comunicator
+            networkClient = NetworkClient.getInstance(Constant.SERVER_IP, Constant.SEND_PORT, Constant.LISTEN_PORT);
+            networkClient.Send("JOIN#");
+            networkClient.StartListening();
+
+            //Game Details
+            game = new GameDetail();
+
+            //Graphic initialize
+            device = graphics.GraphicsDevice;
+            graphics.PreferredBackBufferWidth = 720;
+            graphics.PreferredBackBufferHeight = 480;
+
+            graphics.IsFullScreen = false;
+            graphics.ApplyChanges();
+            Window.Title = "Crash & Burn";
 
             base.Initialize();
         }
@@ -48,6 +74,8 @@ namespace GameClientXNA
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            font = Content.Load<SpriteFont>("font");
+
         }
 
         /// <summary>
@@ -84,8 +112,26 @@ namespace GameClientXNA
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            DrawText();
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
+
+
+
+        //Draft Methods
+        private void DrawText()
+        {
+
+            if (networkClient.IsNewRecievedData)
+                game.processMsg(networkClient.RecievedData);
+
+            if (networkClient.RecievedData != null)
+                spriteBatch.DrawString(font, networkClient.RecievedData, new Vector2(20, 45), Color.White);
+
+        }
+
     }
 }
