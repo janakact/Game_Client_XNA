@@ -14,7 +14,7 @@ namespace GameClientXNA
         public List<Coin> coins;
         public List<LifePack> lifePacks;
         public List<Block> blocks;
-
+        
         public GameDetail()
         {
             players = new Player[5];
@@ -128,7 +128,7 @@ namespace GameClientXNA
             }
 
 
-            if (data.Substring(0, 2) == "G:")
+            if (data.Substring(0, 2) == "G:" && false)
             {
                 String[] arr = data.Split(':', '#');
 

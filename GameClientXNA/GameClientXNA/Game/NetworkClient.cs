@@ -39,7 +39,10 @@ namespace GameClientXNA
             if (instance == null)
             {
                 instance = new NetworkClient(ipAddress, sendPort, listenPort);
+                return instance;
             }
+            instance.StopListening();
+            instance.Set(ipAddress, sendPort, listenPort);
             return instance;
         }
         private NetworkClient(string ipAddress, int sendPort, int listenPort)
@@ -60,7 +63,7 @@ namespace GameClientXNA
         // Wrap event invocations inside a protected virtual method
 
 
-        public void StartListening()
+        public bool StartListening()
         {
 
             //start listening to server's broadcast port
@@ -73,11 +76,12 @@ namespace GameClientXNA
                 thread = new Thread(new ThreadStart(Recieve));
                 recieving = true;
                 thread.Start();
+                return true;
             }
             catch (Exception e)
             {
                 Console.WriteLine("Failed to start listener {0}", e.ToString());
-                return;
+                return false;
             }
         }
 
@@ -113,7 +117,7 @@ namespace GameClientXNA
             }
         }
 
-        public void Send(string data)
+        public bool Send(string data)
         {
             try
             {
@@ -130,23 +134,27 @@ namespace GameClientXNA
                     writer.Close();
                     stream.Close();
                 }
+                return true;
             }
             catch (Exception e)
             {
                 Console.WriteLine("Sending failed : {0}", e.ToString());
+                return false;
             }
         }
 
-        public void StopListening()
+        public bool StopListening()
         {
             try
             {
                 recieving = false;
                 tcpListener.Stop();
+                return true;
             }
             catch (Exception e)
             {
                 Console.WriteLine("Unexpected exception : {0}", e.ToString());
+                return false;
             }
         }
     }

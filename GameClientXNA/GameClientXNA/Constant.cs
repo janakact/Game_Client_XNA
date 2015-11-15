@@ -2,14 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Configuration;
+using System.IO;
 
 namespace GameClientXNA
 {
+    
     class Constant
     {
-        public const string SERVER_IP = "127.0.0.1";
-        public const int SEND_PORT = 6000;
-        public const int LISTEN_PORT = 7000;
+
+        public static string SERVER_IP = "127.0.0.1";
+        public static int SEND_PORT = 6000;
+        public static int LISTEN_PORT = 7000;
+
+
+        //public static string SERVER_IP = configData[0];//"127.0.0.1";
+        //public static int SEND_PORT = int.Parse(configData[1]);//6000;
+        //public static int LISTEN_PORT = int.Parse(configData[2]);//7000;
+
 
         #region "Messages to Send"
         public const string INITIALREQUEST = "JOIN#";
@@ -51,5 +61,44 @@ namespace GameClientXNA
 
         public const string COIN = "C";
         #endregion
+
+        public static void Load()
+        {
+
+            try
+            {
+                StreamReader reader = new StreamReader("config.txt");
+                string configText = reader.ReadLine();
+                reader.Close();
+                LoadFromText(configText);
+            }
+            catch
+            {
+                return;
+            }
+
+            //StreamWriter writetext = new StreamWriter("write.txt");
+            //writetext.WriteLine("writing in text file");
+            //writetext.Close();
+
+        }
+
+        public static bool LoadFromText(String configText)
+        {
+            try
+            {
+                string[] configData = configText.Split(':');
+
+                SERVER_IP = configData[0];
+                SEND_PORT = int.Parse(configData[1]);
+                LISTEN_PORT = int.Parse(configData[2]);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
     }
 }

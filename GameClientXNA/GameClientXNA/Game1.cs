@@ -20,7 +20,7 @@ namespace GameClientXNA
         NetworkClient networkClient;
 
         //Game Details
-        GameDetail game;
+        GameDetail gameDetail;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -28,6 +28,11 @@ namespace GameClientXNA
 
         //Font to draw
         SpriteFont font;
+
+
+
+        //Scene details
+        private bool isHome = true;
 
         public Game1()
         {
@@ -44,13 +49,10 @@ namespace GameClientXNA
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            //Comunicator
-            networkClient = NetworkClient.getInstance(Constant.SERVER_IP, Constant.SEND_PORT, Constant.LISTEN_PORT);
-            networkClient.Send("JOIN#");
-            networkClient.StartListening();
+
 
             //Game Details
-            game = new GameDetail();
+            gameDetail = new GameDetail();
 
             //Graphic initialize
             device = graphics.GraphicsDevice;
@@ -61,6 +63,10 @@ namespace GameClientXNA
             graphics.ApplyChanges();
             Window.Title = "Crash & Burn";
 
+            //Keyboard Dispatcher
+            keyboard_dispatcher = new KeyboardDispatcher(this.Window);
+
+
             base.Initialize();
         }
 
@@ -70,11 +76,28 @@ namespace GameClientXNA
         /// </summary>
         protected override void LoadContent()
         {
+
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            //Load from configurations
+            Constant.Load();
+
             font = Content.Load<SpriteFont>("font");
+
+            //For Home
+            textboxAddress = new TextBox(new Texture2D(device, 100, 10), new Texture2D(device, 100, 10), font);
+            textboxAddress.X = 0;
+            textboxAddress.Y = 0;
+            textboxAddress.Width = 500;
+            textboxAddress.Text = Constant.SERVER_IP+":"+Constant.SEND_PORT+":"+Constant.LISTEN_PORT;
+            keyboard_dispatcher.Subscriber = textboxAddress;
+
+            loadingTexture = Content.Load<Texture2D>("loading-texture");
+
+            
 
         }
 
@@ -85,6 +108,8 @@ namespace GameClientXNA
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            if(networkClient!=null)
+                networkClient.StopListening();
         }
 
         /// <summary>
@@ -99,6 +124,10 @@ namespace GameClientXNA
                 this.Exit();
 
             // TODO: Add your update logic here
+            if (isHome)
+                UpdateHome(gameTime);
+            else
+                UpdateGame(gameTime);
 
             base.Update(gameTime);
         }
@@ -113,25 +142,78 @@ namespace GameClientXNA
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            DrawText();
+            if (isHome)
+                DrawHome(gameTime);
+            else
+                DrawGame(gameTime);
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
+        //_____________________________________________________________________________________Home
+        #region Home Scene
+        //Text Box to take Input 
+        private KeyboardDispatcher keyboard_dispatcher;
+        private TextBox textboxAddress;
+        private Texture2D loadingTexture;
 
-
-        //Draft Methods
-        private void DrawText()
+        public void DrawHome(GameTime gameTime)
         {
+            textboxAddress.Draw(spriteBatch, gameTime);
+            spriteBatch.Draw(loadingTexture, new Vector2(0, 0), Color.White);
+            //spriteBatch.DrawString(font, textboxAddress.Text, new Vector2(20, 45), Color.White);
+        }
 
+        private void UpdateHome(GameTime gameTime)
+        {
+            //Set the subscriber
+            //textboxAddress.Text = Constant.SERVER_IP;
+
+            ProcessKeyboardHome();
+        }
+        private void ProcessKeyboardHome()
+        {
+            KeyboardState keybState = Keyboard.GetState();
+            if (keybState.IsKeyDown(Keys.Enter))
+            {
+                Constant.LoadFromText(textboxAddress.Text);
+                if(networkClient!=null)
+                networkClient.StopListening();
+                            
+                //Comunicator
+                networkClient = NetworkClient.getInstance(Constant.SERVER_IP, Constant.SEND_PORT, Constant.LISTEN_PORT);
+                networkClient.Send("JOIN#");
+                networkClient.StartListening();
+                isHome = false;
+            }
+        }
+        #endregion
+
+        //_______________________________________________________________________________________Game
+        #region Game Scene
+        private void DrawGame(GameTime gameTime)
+        {
             if (networkClient.IsNewRecievedData)
-                game.processMsg(networkClient.RecievedData);
+                gameDetail.processMsg(networkClient.RecievedData);
 
             if (networkClient.RecievedData != null)
                 spriteBatch.DrawString(font, networkClient.RecievedData, new Vector2(20, 45), Color.White);
-
         }
 
+        private void UpdateGame(GameTime gameTime)
+        {
+            ProcessKeyboardGame();
+        }
+
+        private void ProcessKeyboardGame()
+        {
+            KeyboardState keybState = Keyboard.GetState();
+            if (keybState.IsKeyDown(Keys.Escape))
+            {
+                isHome = true;
+            }
+        }
+        #endregion
     }
 }
