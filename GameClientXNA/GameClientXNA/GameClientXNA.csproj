@@ -73,12 +73,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constant.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="GameElements.cs" />
-    <Compile Include="NetworkClient.cs" />
+    <Compile Include="TextBox\EventInput.cs" />
+    <Compile Include="Utilities\Game.cs" />
+    <Compile Include="Utilities\GameElements.cs" />
+    <Compile Include="TextBox\KeyboardDispatcher.cs" />
+    <Compile Include="Utilities\NetworkClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="TextBox\TextBox.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
