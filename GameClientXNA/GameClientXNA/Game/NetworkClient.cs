@@ -91,7 +91,7 @@ namespace GameClientXNA
             {
                 try
                 {
-                    // Always use a Sleep call in a while(true) loop 
+                    //// Always use a Sleep call in a while(true) loop 
                     // to avoid locking up your CPU.
                     Thread.Sleep(10);
                     // Create a TCP socket. 
