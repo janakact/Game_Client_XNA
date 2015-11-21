@@ -25,11 +25,13 @@ namespace GameClientXNA
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         GraphicsDevice device;
+        int screenWidth, screenHeight;
 
         //Font to draw
         SpriteFont font;
 
-
+        //Drawing Manager
+        DrawingManager drawingManager;
 
         //Scene details
         private bool isHome = true;
@@ -51,17 +53,23 @@ namespace GameClientXNA
             // TODO: Add your initialization logic here
 
 
-            //Game Details
-            gameDetail = new GameDetail();
+
+            
 
             //Graphic initialize
             device = graphics.GraphicsDevice;
             graphics.PreferredBackBufferWidth = 720;
             graphics.PreferredBackBufferHeight = 480;
 
+            screenWidth = graphics.PreferredBackBufferWidth;
+            screenHeight = graphics.PreferredBackBufferHeight;
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             Window.Title = "Crash & Burn";
+
+            //Game Details
+            gameDetail = new GameDetail();
+            drawingManager = new DrawingManager(graphics);
 
             //Keyboard Dispatcher
             keyboard_dispatcher = new KeyboardDispatcher(this.Window);
@@ -96,6 +104,11 @@ namespace GameClientXNA
             keyboard_dispatcher.Subscriber = textboxAddress;
 
             loadingTexture = Content.Load<Texture2D>("loading-texture");
+
+
+            //Loading for game
+            drawingManager.LoadContent();
+
 
             
 
@@ -194,14 +207,11 @@ namespace GameClientXNA
         #region Game Scene
         private void DrawGame(GameTime gameTime)
         {
-            Queue<String> recievedData = networkClient.RecievedData;
-            while (recievedData.Count > 0)
-                gameDetail.processMsg(recievedData.Dequeue());
-
+            drawingManager.Begin(spriteBatch, gameTime);
             //Draw grid
-            foreach(Block b in gameDetail.blocks)
+            foreach(dynamic b in gameDetail.blocks)
             {
-
+                drawingManager.DrawBlock(b);
             }
 
          
@@ -211,6 +221,9 @@ namespace GameClientXNA
         private void UpdateGame(GameTime gameTime)
         {
             ProcessKeyboardGame();
+            Queue<String> recievedData = networkClient.RecievedData;
+            while (recievedData.Count > 0)
+                gameDetail.processMsg(recievedData.Dequeue());
         }
 
         private void ProcessKeyboardGame()

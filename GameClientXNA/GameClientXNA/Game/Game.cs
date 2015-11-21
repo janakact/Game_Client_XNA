@@ -90,6 +90,15 @@ namespace GameClientXNA
                     grid[x, y] = Constant.WATER;
                 }
 
+                for(int i=0; i<10; i++)
+                {
+                    for(int j=0; j<10; j++)
+                    {
+                        if (grid[i, j] == "N")
+                            blocks.Add(new EmptyBlock(i, j));
+                    }
+                }
+
             }
             //Console.WriteLine(thisPlayer.name);
             if (data.Substring(0, 2) == "S:")
