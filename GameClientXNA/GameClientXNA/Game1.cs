@@ -194,12 +194,19 @@ namespace GameClientXNA
         #region Game Scene
         private void DrawGame(GameTime gameTime)
         {
-            if (networkClient.IsNewRecievedData)
-                gameDetail.processMsg(networkClient.RecievedData);
+            Queue<String> recievedData = networkClient.RecievedData;
+            while (recievedData.Count > 0)
+                gameDetail.processMsg(recievedData.Dequeue());
 
-            if (networkClient.RecievedData != null)
-                spriteBatch.DrawString(font, networkClient.RecievedData, new Vector2(20, 45), Color.White);
+            //Draw grid
+            foreach(Block b in gameDetail.blocks)
+            {
+
+            }
+
+         
         }
+
 
         private void UpdateGame(GameTime gameTime)
         {

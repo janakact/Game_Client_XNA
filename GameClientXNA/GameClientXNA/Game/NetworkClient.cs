@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Collections.Generic;
 
 
 namespace GameClientXNA
@@ -25,10 +26,8 @@ namespace GameClientXNA
         bool recieving = false;
 
         //Read Message and check whether a new message
-        private String recievedData;
-        public bool isNewRecievedData;
-        public String RecievedData{ get{ isNewRecievedData = false; return recievedData; } }
-        public bool IsNewRecievedData{ get { return isNewRecievedData; } }
+        private Queue<String> recievedData;
+        public Queue<String> RecievedData { get{ return recievedData; } }
 
         //Instance
         private static NetworkClient instance;
@@ -47,6 +46,7 @@ namespace GameClientXNA
         }
         private NetworkClient(string ipAddress, int sendPort, int listenPort)
         {
+            recievedData = new Queue<String>();
             this.ipAddress = IPAddress.Parse(ipAddress);
             this.sendPort = sendPort;
             this.listenPort = listenPort;
@@ -106,8 +106,7 @@ namespace GameClientXNA
                     string msg = Encoding.ASCII.GetString(bytes);
 
                     //Do what should be done (UPDATE recieved data)
-                    recievedData = msg.Substring(0, msg.IndexOf('\0'));
-                    isNewRecievedData = true;
+                    recievedData.Enqueue(msg.Substring(0, msg.IndexOf('\0')));
 
                 }
                 catch (Exception e)
