@@ -20,22 +20,26 @@ namespace GameClientXNA
         GraphicsDevice device;
         ContentManager content;
         int screenWidth, screenHeight;
+        GameDetail gameDetail;
 
         //Textures
         Texture2D blockTexture;
         Texture2D tankTexture;
-        public DrawingManager(GraphicsDeviceManager graphics, ContentManager content,SpriteBatch spriteBatch)
+        Vector2 tankOrigin;
+        public DrawingManager(GraphicsDeviceManager graphics, ContentManager content,GameDetail gameDetail)
         {
             device = graphics.GraphicsDevice;
             this.content = content;
             this.graphics = graphics;
             screenHeight = graphics.PreferredBackBufferHeight;
             screenWidth = graphics.PreferredBackBufferWidth;
-            this.spriteBatch = spriteBatch;
+            this.gameDetail = gameDetail;
         }
 
-        public void LoadContent()
+        public void LoadContent( SpriteBatch spriteBatch)
         {
+
+            this.spriteBatch = spriteBatch;
             //Generate a white texture
             blockTexture = new Texture2D(device, 30, 30);
             Color[] blockData = new Color[blockTexture.Width * blockTexture.Height];
@@ -44,14 +48,26 @@ namespace GameClientXNA
             blockTexture.SetData<Color>(blockData);
 
             tankTexture = content.Load<Texture2D>("tank");
+            tankOrigin = new Vector2(10, 15);
         }
 
-        public void DrawGame(SpriteBatch spriteBatch, GameTime gameTime)
+        public void DrawGame(GameTime gameTime)
         {
             this.gameTime = gameTime;
-            this.spriteBatch = spriteBatch;
+            //Draw grid
+            foreach (dynamic b in gameDetail.blocks)
+            {
+                DrawBlock(b);
+            }
+
+            foreach (dynamic player in gameDetail.players)
+            {
+                DrawPlayer(player);
+            }
+
+
         }
-  
+
 
         public void DrawBlock(Block b)
         {
@@ -75,7 +91,7 @@ namespace GameClientXNA
 
         public void DrawPlayer(Player p)
         {
-            spriteBatch.Draw(tankTexture, new Rectangle(p.x * 35, p.y * 35, 30, 20), null, Color.Gray,(float)((Math.PI/2)*p.direction+ Math.PI / 2 ), new Vector2(0,0), SpriteEffects.None, 0);
+            spriteBatch.Draw(tankTexture, new Rectangle(p.x * 35, p.y * 35, 30, 20), null, Color.Gray,(float)((Math.PI/2)*p.direction+ Math.PI / 2 ), tankOrigin, SpriteEffects.None, 0);
         }
     }
 }
