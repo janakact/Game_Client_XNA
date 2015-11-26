@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameClientXNA
 {
-    class GameDetail
+   public class GameDetail
     {
         public string[,] grid;
         public Player[] players;// = new List<Player>();
@@ -137,15 +137,16 @@ namespace GameClientXNA
             }
 
 
-            if (data.Substring(0, 2) == "G:" && false)
+            if (data.Substring(0, 2) == "G:")
             {
                 String[] arr = data.Split(':', '#');
 
-                for (int i = 0; i < arr.Length; i++)
+                for (int i = 0; i < arr.Length-1; i++)
                 {
-                    if (arr[i][0] == 'P')
+                    if (arr[i].Length>1 && arr[i][0] == 'P')
                     {
                         String[] details = arr[i].Split(';');
+                       
                         int j = int.Parse(details[0][1].ToString());
                         if (j < 5 && j >= 0)
                         {

@@ -52,10 +52,6 @@ namespace GameClientXNA
         {
             // TODO: Add your initialization logic here
 
-
-
-            
-
             //Graphic initialize
             device = graphics.GraphicsDevice;
             graphics.PreferredBackBufferWidth = 720;
