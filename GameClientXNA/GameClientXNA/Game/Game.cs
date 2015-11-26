@@ -13,7 +13,8 @@ namespace GameClientXNA
         public Player thisPlayer;
         public List<Coin> coins;
         public List<LifePack> lifePacks;
-        public List<Block> blocks;
+        //public List<Block> blocks;
+        public Block[,] blocks;
         
         public GameDetail()
         {
@@ -21,7 +22,7 @@ namespace GameClientXNA
             thisPlayer = new Player();
             coins = new List<Coin>();
             lifePacks = new List<LifePack>();
-            blocks = new List<Block>();
+            blocks = new Block [10,10];
 
             //initializing the list
             for (int i = 0; i < 5; i++) { players[i] = new Player(); }
@@ -68,7 +69,9 @@ namespace GameClientXNA
                 {
                     int x = int.Parse(brickCordinates[i][0].ToString());
                     int y = int.Parse(brickCordinates[i][2].ToString());
-                    blocks.Add(new Brick(x, y, 100));
+                    //blocks.Add(new Brick(x, y, 100));
+                    blocks[x, y] = new Brick(x, y, 100);
+                    //(blocks[x, y] as Brick).health = 234;
                     grid[x, y] = Constant.BRICK;
                 }
 
@@ -77,7 +80,8 @@ namespace GameClientXNA
                 {
                     int x = int.Parse(stoneCordinates[i][0].ToString());
                     int y = int.Parse(stoneCordinates[i][2].ToString());
-                    blocks.Add(new Stone(x, y));
+                    //blocks.Add(new Stone(x, y));
+                    blocks[x, y] = new Stone(x, y);
                     grid[x, y] = Constant.STONE;
                 }
 
@@ -86,7 +90,8 @@ namespace GameClientXNA
                 {
                     int x = int.Parse(waterCordinates[i][0].ToString());
                     int y = int.Parse(waterCordinates[i][2].ToString());
-                    blocks.Add(new Water(x, y));
+                    //blocks.Add(new Water(x, y));
+                    blocks[x, y] = new Water(x, y);
                     grid[x, y] = Constant.WATER;
                 }
 
@@ -94,8 +99,8 @@ namespace GameClientXNA
                 {
                     for(int j=0; j<10; j++)
                     {
-                        if (grid[i, j] == "N")
-                            blocks.Add(new EmptyBlock(i, j));
+                        if (blocks[i, j] == null)
+                            blocks[i, j] = new EmptyBlock(i, j);
                     }
                 }
 
@@ -143,25 +148,46 @@ namespace GameClientXNA
 
                 for (int i = 0; i < arr.Length-1; i++)
                 {
-                    if (arr[i].Length>1 && arr[i][0] == 'P')
+                    if (arr[i].Length > 1 && arr[i][0] == 'P')
                     {
-                        String[] details = arr[i].Split(';');
-                       
-                        int j = int.Parse(details[0][1].ToString());
+                        String[] details1 = arr[i].Split(';');
+
+                        int j = int.Parse(details1[0][1].ToString());
                         if (j < 5 && j >= 0)
                         {
                             if (players[j] == null)
                                 players[j] = new Player();
-                            players[j].name = details[0];
-                            players[j].x = int.Parse(details[1][0].ToString());
-                            players[j].y = int.Parse(details[1][2].ToString());
-                            players[j].direction = int.Parse(details[2][0].ToString());
-                            players[j].isShot = int.Parse(details[3][0].ToString());
-                            players[j].health = int.Parse(details[4]);
-                            players[j].coins = int.Parse(details[5]);
-                            players[j].points = int.Parse(details[6]);
+                            players[j].name = details1[0];
+                            players[j].x = int.Parse(details1[1][0].ToString());
+                            players[j].y = int.Parse(details1[1][2].ToString());
+                            players[j].direction = int.Parse(details1[2][0].ToString());
+                            players[j].isShot = int.Parse(details1[3][0].ToString());
+                            players[j].health = int.Parse(details1[4]);
+                            players[j].coins = int.Parse(details1[5]);
+                            players[j].points = int.Parse(details1[6]);
 
                         }
+                    }
+
+                    else
+                    {
+                        String[] details2 = arr[i].Split(';');
+                        for (int k = 0; k < details2.Length; k++)
+                        {
+                            String [] xyHealth = details2[i].Split(',');
+                            int x = int.Parse(xyHealth[0].ToString());
+                            int y = int.Parse(xyHealth[1].ToString());
+                            int health = int.Parse(xyHealth[1].ToString());
+
+                            (blocks[x, y] as Brick).health = health;
+                            (blocks[x, y] as Brick).x = x;
+                            (blocks[x, y] as Brick).y = y;
+
+                        }
+
+
+
+
                     }
 
                 }
