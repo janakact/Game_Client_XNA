@@ -172,7 +172,7 @@ namespace GameClientXNA
                         }
                     }
 
-                    else
+                    else if (arr[i].Length > 1)
                     {
                         String[] details2 = arr[i].Split(';');
                         for (int k = 0; k < details2.Length; k++)
@@ -180,16 +180,50 @@ namespace GameClientXNA
                             String [] xyHealth = details2[i].Split(',');
                             int x = int.Parse(xyHealth[0].ToString());
                             int y = int.Parse(xyHealth[1].ToString());
-                            int health = int.Parse(xyHealth[1].ToString());
+                            int damage = int.Parse(xyHealth[2].ToString());
+                            int health;
 
-                            (blocks[x, y] as Brick).health = health;
+                            if (damage == 0)
+                            {
+                                health = 100;
+                                (blocks[x, y] as Brick).health = health;
+                            }
+
+                            if (damage == 0)
+                            {
+                                health = 100;
+                                (blocks[x, y] as Brick).health = health;
+                            }
+
+                            if (damage == 1)
+                            {
+                                health = 75;
+                                (blocks[x, y] as Brick).health = health;
+                            }
+
+                            if (damage == 2)
+                            {
+                                health = 50;
+                                (blocks[x, y] as Brick).health = health;
+                            }
+
+                            if (damage == 3)
+                            {
+                                health = 25;
+                                (blocks[x, y] as Brick).health = health;
+                            }
+
+                            if (damage == 4)
+                            {
+                                health = 0;
+                                (blocks[x, y] as Brick).health = health;
+                            }
+
+                            //(blocks[x, y] as Brick).health = health;
                             (blocks[x, y] as Brick).x = x;
                             (blocks[x, y] as Brick).y = y;
 
                         }
-
-
-
 
                     }
 
