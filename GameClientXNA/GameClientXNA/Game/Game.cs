@@ -137,11 +137,11 @@ namespace GameClientXNA
             }
 
 
-            if (data.Substring(0, 2) == "G:" && false)
+            if (data.Substring(0, 2) == "G:")
             {
                 String[] arr = data.Split(':', '#');
 
-                for (int i = 0; i < arr.Length; i++)
+                for (int i = 0; i < arr.Length-1; i++)
                 {
                     if (arr[i][0] == 'P')
                     {

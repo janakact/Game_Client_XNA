@@ -69,7 +69,7 @@ namespace GameClientXNA
 
             //Game Details
             gameDetail = new GameDetail();
-            drawingManager = new DrawingManager(graphics);
+            drawingManager = new DrawingManager(graphics,this.Content);
 
             //Keyboard Dispatcher
             keyboard_dispatcher = new KeyboardDispatcher(this.Window);
@@ -105,6 +105,7 @@ namespace GameClientXNA
 
             loadingTexture = Content.Load<Texture2D>("loading-texture");
 
+            
 
             //Loading for game
             drawingManager.LoadContent();
@@ -207,11 +208,16 @@ namespace GameClientXNA
         #region Game Scene
         private void DrawGame(GameTime gameTime)
         {
-            drawingManager.Begin(spriteBatch, gameTime);
+            drawingManager.DrawGame(spriteBatch, gameTime);
             //Draw grid
             foreach(dynamic b in gameDetail.blocks)
             {
                 drawingManager.DrawBlock(b);
+            }
+
+            foreach (dynamic player in gameDetail.players)
+            {
+                drawingManager.DrawPlayer(player); 
             }
 
          
