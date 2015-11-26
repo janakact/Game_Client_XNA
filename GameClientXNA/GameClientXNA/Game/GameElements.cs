@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameClientXNA
 {
-    class Player
+    public class Player
     {
         public String name;
         public int x;
@@ -18,14 +18,14 @@ namespace GameClientXNA
         public int points;
     }
 
-    class LifePack
+    public class LifePack
     {
         public int x;
         public int y;
         public int lifeTime;
     }
 
-    class Coin
+    public class Coin
     {
         public int value;
         public int lifeTime;
@@ -34,13 +34,13 @@ namespace GameClientXNA
 
     }
 
-    class Block
+    public class Block
     {
         public int x;
         public int y;
     }
 
-    class Brick : Block
+    public class Brick : Block
     {
 
         public int health;
@@ -52,7 +52,7 @@ namespace GameClientXNA
         }
 
     }
-    class Stone : Block
+    public class Stone : Block
     {
         public Stone(int x, int y)
         {
@@ -60,7 +60,7 @@ namespace GameClientXNA
             this.y = y;
         }
     }
-    class Water : Block
+    public class Water : Block
     {
         public Water(int x, int y)
         {
@@ -69,7 +69,7 @@ namespace GameClientXNA
         }
     }
 
-    class EmptyBlock : Block
+    public class EmptyBlock : Block
     {
         public EmptyBlock(int x, int y)
         {
