@@ -55,11 +55,10 @@ namespace GameClientXNA
         {
             this.gameTime = gameTime;
             //Draw grid
-            foreach (dynamic b in gameDetail.blocks)
-            {
-                DrawBlock(b);
-            }
-
+            for (int i = 0; i < 10; i++)
+                for (int j = 0; j < 10; j++)
+                    DrawBlock(gameDetail.blocks[i, j] as dynamic);
+            
             foreach (dynamic player in gameDetail.players)
             {
                 DrawPlayer(player);
