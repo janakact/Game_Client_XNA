@@ -25,6 +25,8 @@ namespace GameClientXNA
         //Textures
         Texture2D blockTexture;
         Texture2D tankTexture;
+        Texture2D lifePackTexture;
+        Texture2D coinTexture;
         Vector2 tankOrigin;
         public DrawingManager(GraphicsDeviceManager graphics, ContentManager content,GameDetail gameDetail)
         {
@@ -36,7 +38,7 @@ namespace GameClientXNA
             this.gameDetail = gameDetail;
         }
 
-        public void LoadContent( SpriteBatch spriteBatch)
+        public void LoadContent(SpriteBatch spriteBatch)
         {
 
             this.spriteBatch = spriteBatch;
@@ -49,6 +51,10 @@ namespace GameClientXNA
 
             tankTexture = content.Load<Texture2D>("tank");
             tankOrigin = new Vector2(10, 15);
+
+            lifePackTexture = content.Load<Texture2D>("lifePack");
+
+            coinTexture = content.Load<Texture2D>("coin");
         }
 
         public void DrawGame(GameTime gameTime)
@@ -62,6 +68,16 @@ namespace GameClientXNA
             foreach (dynamic player in gameDetail.players)
             {
                 DrawPlayer(player);
+            }
+
+            foreach (dynamic lifePack in gameDetail.lifePacks)
+            {
+                DrawLifePack(lifePack);        
+            }
+
+            foreach (dynamic coin in gameDetail.coins)
+            {
+                DrawCoin(coin);
             }
 
 
@@ -90,7 +106,17 @@ namespace GameClientXNA
 
         public void DrawPlayer(Player p)
         {
-            spriteBatch.Draw(tankTexture, new Rectangle(p.x * 35, p.y * 35, 30, 20), null, Color.Gray,(float)((Math.PI/2)*p.direction+ Math.PI / 2 ), tankOrigin, SpriteEffects.None, 0);
+            spriteBatch.Draw(tankTexture, new Rectangle(p.x * 35, p.y * 53, 30, 20), null, Color.Gray,(float)((Math.PI/2)*p.direction+ Math.PI / 2 ), tankOrigin, SpriteEffects.None, 0);
+        }
+
+        public void DrawLifePack(LifePack l)
+        {
+            spriteBatch.Draw(lifePackTexture, new Rectangle(l.x * 35, l.y * 35, 30, 30), null, Color.White);
+        }
+
+        public void DrawCoin(Coin c)
+        {
+            spriteBatch.Draw(coinTexture, new Rectangle(c.x * 35, c.y * 35, 30, 30), null, Color.White);
         }
     }
 }
