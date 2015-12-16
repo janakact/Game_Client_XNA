@@ -5,9 +5,9 @@ using System.Text;
 
 namespace GameClientXNA.Game.AI
 {
-    class TaskManager
+    public class TaskManager
     {
-        private static List<int> getPath(GameDetail game,int from, int to)
+        public static List<int> getPath(GameDetail game,int from, int to)
         {
             List<int> path = new List<int>();
 
@@ -25,45 +25,57 @@ namespace GameClientXNA.Game.AI
                 int block = queue.Dequeue();
                 int i = block / 10, j = block % 10;
 
-                if (game.blocks[i, j].GetType() != typeof(EmptyBlock)) continue;//do no add childs if it is a blocked cell
+                if (game.blocks[i, j].GetType() != typeof(EmptyBlock))
+                {
+                    parents[block] = -2;
+                    continue;//do no add childs if it is a blocked cell
+                }
 
                 if(i>0)
                 {
                     int tmp = (i - 1) * 10 + j;
-                    if (parents[tmp] != -1 ) continue;
-                    parents[tmp] = block;
-                    queue.Enqueue(tmp);
+                    if (parents[tmp] == -1)
+                    {
+                        parents[tmp] = block;
+                        queue.Enqueue(tmp);
+                    }
                 }
                 if (j > 0)
                 {
                     int tmp = (i) * 10 + j-1;
-                    if (parents[tmp] != -1) continue;
-                    parents[tmp] = block;
-                    queue.Enqueue(tmp);
+                    if (parents[tmp] == -1)
+                    {
+                        parents[tmp] = block;
+                        queue.Enqueue(tmp);
+                    }
                 }
                 if (i <9)
                 {
                     int tmp = (i + 1) * 10 + j;
-                    if (parents[tmp] != -1) continue;
-                    parents[tmp] = block;
-                    queue.Enqueue(tmp);
+                    if (parents[tmp] == -1)
+                    {
+                        parents[tmp] = block;
+                        queue.Enqueue(tmp);
+                    }
                 }
                 if (j < 9)
                 {
                     int tmp = (i) * 10 + j+1;
-                    if (parents[tmp] != -1) continue;
-                    parents[tmp] = block;
-                    queue.Enqueue(tmp);
+                    if (parents[tmp] == -1)
+                    {
+                        parents[tmp] = block;
+                        queue.Enqueue(tmp);
+                    }
                 }
             }
 
             //Return null if we can't find a possible path
-            if (parents[to] == -1) return null;
+            if (parents[to] <0) return null;
 
 
             //Find the path
             int movingCell = to;
-            while(movingCell==from)
+            while(movingCell!=from)
             {
                 path.Add(movingCell);
                 movingCell = parents[movingCell];
