@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Constant.cs" />
     <Compile Include="Game\AI\MessageSender.cs" />
+    <Compile Include="Game\AI\TaskManager.cs" />
     <Compile Include="Game\DrawingManager.cs" />
     <Compile Include="TextBox\EventInput.cs" />
     <Compile Include="Game\Game.cs" />
