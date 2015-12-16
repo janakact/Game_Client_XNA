@@ -74,6 +74,8 @@ namespace GameClientXNA
         public void processMsg(String data, TimeSpan time)
 
         {
+
+
             //To Pani - update the grid[] as required.
             //This is the parser. add if conditions to identify messages and do the required process
 
@@ -262,16 +264,18 @@ namespace GameClientXNA
 
             }
 
-
+            //By Janaka---------------------------------------------------------
             else if (data == Constant.S2C_GAMESTARTED)
             {
                 //Game started
             }
             //Add others
-            else
+            else if(data == Constant.S2C_TOOEARLY)
             {
+
                 //Messages which can't be recognized
             }
+            //------------------------------------------------------------------
 
         }
     }
