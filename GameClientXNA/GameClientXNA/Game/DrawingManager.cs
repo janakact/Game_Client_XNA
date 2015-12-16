@@ -60,7 +60,7 @@ namespace GameClientXNA
             blockTexture.SetData<Color>(blockData);
 
             tankTexture = content.Load<Texture2D>("tank");
-            tankOrigin = new Vector2(270, 90);
+            tankOrigin = new Vector2(75, 75);
 
             lifePackTexture = content.Load<Texture2D>("lifePack");
 
@@ -99,7 +99,6 @@ namespace GameClientXNA
         {
             Rectangle screenRectangle = new Rectangle(0, 0, screenWidth, screenHeight);
             spriteBatch.Draw(backgroundTexture, screenRectangle, Color.White);
-            //spriteBatch.Draw(foregroundTexture, screenRectangle, Color.White);
         }
 
         public void DrawBlock(Block b)
@@ -124,8 +123,10 @@ namespace GameClientXNA
 
         public void DrawPlayer(Player p)
         {
-            spriteBatch.Draw(tankTexture, new Rectangle(p.x * 35, p.y * 35, 30, 30), null, Color.Gray,(float)((Math.PI/2)*p.direction+ Math.PI / 2 ), tankOrigin, SpriteEffects.None, 0);
-            //spriteBatch.Draw(tankTexture, new Rectangle(p.x * 35, p.y * 35, 30, 30), null, Color.White);
+            //(float)((Math.PI/2)*p.direction+ Math.PI / 2 )
+            //spriteBatch.Draw(tankTexture, new Rectangle(p.x * 35, p.y * 35, 30, 30), null, Color.Gray,0, tankOrigin, SpriteEffects.None, 0);
+            // spriteBatch.Draw(tankTexture, new Rectangle(p.x * 35, p.y * 35, 30, 30), null, Color.White);
+            spriteBatch.Draw(tankTexture, new Vector2(p.x * 35+15, p.y*35 +15 ), null, Color.White, (float)((Math.PI / 2) * p.direction + Math.PI / 2), tankOrigin, float.Parse("0.2") , SpriteEffects.None, 1);
         }
 
         public void DrawLifePack(LifePack l)
