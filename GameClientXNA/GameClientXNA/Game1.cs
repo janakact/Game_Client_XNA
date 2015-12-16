@@ -19,6 +19,9 @@ namespace GameClientXNA
         //Comunicator
         NetworkClient networkClient;
 
+        //AI
+        Game.AI.MessageSender msgSender;
+
         //Game Details
         GameDetail gameDetail;
 
@@ -35,6 +38,10 @@ namespace GameClientXNA
 
         //Scene details
         private bool isHome = true;
+
+        //Manual Move
+        string nextMove;
+        int waitCount = 0;
 
         public Game1()
         {
@@ -66,6 +73,7 @@ namespace GameClientXNA
             //Game Details
             gameDetail = new GameDetail();
             drawingManager = new DrawingManager(graphics,this.Content,gameDetail);
+            msgSender = new Game.AI.MessageSender(networkClient);
 
             //Keyboard Dispatcher
             keyboard_dispatcher = new KeyboardDispatcher(this.Window);
@@ -190,11 +198,16 @@ namespace GameClientXNA
                 Constant.LoadFromText(textboxAddress.Text);
                 if(networkClient!=null)
                 networkClient.StopListening();
-                            
-                //Comunicator
+
                 networkClient = NetworkClient.getInstance(Constant.SERVER_IP, Constant.SEND_PORT, Constant.LISTEN_PORT);
+
+                //Join the game
                 networkClient.Send("JOIN#");
+       
                 networkClient.StartListening();
+
+                //To send messages
+                msgSender = new Game.AI.MessageSender(networkClient);
                 isHome = false;
             }
         }
@@ -207,13 +220,30 @@ namespace GameClientXNA
             drawingManager.DrawGame( gameTime);
         }
 
-
+        
         private void UpdateGame(GameTime gameTime)
         {
-            ProcessKeyboardGame();
+            ProcessKeyboardGame();//Process keyboard - Esc to exit
+
+            msgSender.update(gameTime.TotalGameTime); //Send the message will be handled by the msgSender. it will handle too-early situations
+
+            //Process recieved messages
             Queue<String> recievedData = networkClient.RecievedData;
             while (recievedData.Count > 0)
-                gameDetail.processMsg(recievedData.Dequeue());
+            {
+                String msg = recievedData.Dequeue();
+                gameDetail.processMsg(msg, gameTime.TotalGameTime);
+                if(msg == Constant.S2C_TOOEARLY)
+                {
+                   // msgSender.markSendFailed();
+                }
+            }
+
+            //Update gameDetails. | for Coin,LifePack - Timeout
+            gameDetail.update(gameTime.TotalGameTime);
+
+            waitCount = (waitCount+1)%59;
+            //if (waitCount == 0) networkClient.Send(nextMove);
         }
 
         private void ProcessKeyboardGame()
@@ -222,6 +252,27 @@ namespace GameClientXNA
             if (keybState.IsKeyDown(Keys.Escape))
             {
                 isHome = true;
+            }
+            if (keybState.IsKeyDown(Keys.Up))
+            {
+               // networkClient.Send("LEFT#");
+                msgSender.setMessage("UP#");
+            }
+            if (keybState.IsKeyDown(Keys.Down))
+            {
+                msgSender.setMessage("DOWN#"); 
+            }
+            if (keybState.IsKeyDown(Keys.Left))
+            {
+                msgSender.setMessage("LEFT#");
+            }
+            if (keybState.IsKeyDown(Keys.Right))
+            {
+                msgSender.setMessage("RIGHT#");
+            }
+            if (keybState.IsKeyDown(Keys.Space))
+            {
+                msgSender.setMessage("SHOOT#"); 
             }
         }
         #endregion

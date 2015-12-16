@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,9 +42,40 @@ namespace GameClientXNA
             }
         }
 
-        public void processMsg(String data)
+
+        public void update(TimeSpan time)
+        {
+            
+            // Remove life packs
+            for (int i = 0; i < lifePacks.Count; i++)
+            {
+                Console.WriteLine(i+"\t"+(time - lifePacks[i].arrivedTime).Milliseconds+" "+ lifePacks[i].lifeTime);
+                int timeGap = (time - lifePacks[i].arrivedTime).Milliseconds + 1000 * ((time - lifePacks[i].arrivedTime).Seconds);
+                if (timeGap > lifePacks[i].lifeTime)
+                {
+                    lifePacks.RemoveAt(i);
+                    i--;
+                }
+            }
+            // remove coins
+            for (int i = 0; i < coins.Count; i++)
+            {
+                //Console.WriteLine(coins[i].lifeTime);
+                int timeGap = (time - coins[i].arrivedTime).Milliseconds + 1000 * ((time - coins[i].arrivedTime).Seconds);
+                if (timeGap > coins[i].lifeTime)
+                {
+                    coins.RemoveAt(i);
+                    i--;
+                }
+            }
+
+
+        }
+        public void processMsg(String data, TimeSpan time)
 
         {
+
+
             //To Pani - update the grid[] as required.
             //This is the parser. add if conditions to identify messages and do the required process
 
@@ -129,7 +161,7 @@ namespace GameClientXNA
                 c.y = int.Parse(arr[1][2].ToString());
                 c.lifeTime = int.Parse(arr[2]);
                 c.value = int.Parse(arr[3]);
-
+                c.arrivedTime = time; //Save the arrive time
                 coins.Add(c);
             }
 
@@ -140,7 +172,7 @@ namespace GameClientXNA
                 l.x = int.Parse(arr[1][0].ToString());
                 l.y = int.Parse(arr[1][2].ToString());
                 l.lifeTime = int.Parse(arr[2]);
-
+                l.arrivedTime = time; //Save the arrive time
                 lifePacks.Add(l);
             }
 
@@ -232,16 +264,18 @@ namespace GameClientXNA
 
             }
 
-
+            //By Janaka---------------------------------------------------------
             else if (data == Constant.S2C_GAMESTARTED)
             {
                 //Game started
             }
             //Add others
-            else
+            else if(data == Constant.S2C_TOOEARLY)
             {
+
                 //Messages which can't be recognized
             }
+            //------------------------------------------------------------------
 
         }
     }
