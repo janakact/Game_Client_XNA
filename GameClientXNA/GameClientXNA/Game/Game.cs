@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,7 +42,36 @@ namespace GameClientXNA
             }
         }
 
-        public void processMsg(String data)
+
+        public void update(TimeSpan time)
+        {
+            
+            // Remove life packs
+            for (int i = 0; i < lifePacks.Count; i++)
+            {
+                Console.WriteLine(i+"\t"+(time - lifePacks[i].arrivedTime).Milliseconds+" "+ lifePacks[i].lifeTime);
+                int timeGap = (time - lifePacks[i].arrivedTime).Milliseconds + 1000 * ((time - lifePacks[i].arrivedTime).Seconds);
+                if (timeGap > lifePacks[i].lifeTime)
+                {
+                    lifePacks.RemoveAt(i);
+                    i--;
+                }
+            }
+            // remove coins
+            for (int i = 0; i < coins.Count; i++)
+            {
+                //Console.WriteLine(coins[i].lifeTime);
+                int timeGap = (time - coins[i].arrivedTime).Milliseconds + 1000 * ((time - coins[i].arrivedTime).Seconds);
+                if (timeGap > coins[i].lifeTime)
+                {
+                    coins.RemoveAt(i);
+                    i--;
+                }
+            }
+
+
+        }
+        public void processMsg(String data, TimeSpan time)
 
         {
             //To Pani - update the grid[] as required.
@@ -129,7 +159,7 @@ namespace GameClientXNA
                 c.y = int.Parse(arr[1][2].ToString());
                 c.lifeTime = int.Parse(arr[2]);
                 c.value = int.Parse(arr[3]);
-
+                c.arrivedTime = time; //Save the arrive time
                 coins.Add(c);
             }
 
@@ -140,7 +170,7 @@ namespace GameClientXNA
                 l.x = int.Parse(arr[1][0].ToString());
                 l.y = int.Parse(arr[1][2].ToString());
                 l.lifeTime = int.Parse(arr[2]);
-
+                l.arrivedTime = time; //Save the arrive time
                 lifePacks.Add(l);
             }
 
@@ -172,20 +202,59 @@ namespace GameClientXNA
                         }
                     }
 
-                    else
+                    else if (arr[i].Length > 1)
                     {
-                        //String[] details2 = arr[i].Split(';');
-                        //for (int k = 0; k < details2.Length; k++)
-                        //{
-                        //    String [] xyHealth = details2[i].Split(',');
-                        //    int x = int.Parse(xyHealth[0].ToString());
-                        //    int y = int.Parse(xyHealth[1].ToString());
-                        //    int health = int.Parse(xyHealth[1].ToString());
+                        String[] details2 = arr[i].Split(';');
+                        for (int k = 0; k < details2.Length; k++)
+                        {
+                            String [] xyHealth = details2[i].Split(',');
+                            int x = int.Parse(xyHealth[0].ToString());
+                            int y = int.Parse(xyHealth[1].ToString());
+                            int damage = int.Parse(xyHealth[2].ToString());
+                            int health;
 
-                        //    (blocks[x, y] as Brick).health = health;
-                        //    (blocks[x, y] as Brick).x = x;
-                        //    (blocks[x, y] as Brick).y = y;
-                        //}
+                            if (damage == 0)
+                            {
+                                health = 100;
+                                (blocks[x, y] as Brick).health = health;
+                            }
+
+                            if (damage == 0)
+                            {
+                                health = 100;
+                                (blocks[x, y] as Brick).health = health;
+                            }
+
+                            if (damage == 1)
+                            {
+                                health = 75;
+                                (blocks[x, y] as Brick).health = health;
+                            }
+
+                            if (damage == 2)
+                            {
+                                health = 50;
+                                (blocks[x, y] as Brick).health = health;
+                            }
+
+                            if (damage == 3)
+                            {
+                                health = 25;
+                                (blocks[x, y] as Brick).health = health;
+                            }
+
+                            if (damage == 4)
+                            {
+                                health = 0;
+                                (blocks[x, y] as Brick).health = health;
+                            }
+
+                            //(blocks[x, y] as Brick).health = health;
+                            (blocks[x, y] as Brick).x = x;
+                            (blocks[x, y] as Brick).y = y;
+
+                        }
+
                     }
 
                 }

@@ -211,16 +211,18 @@ namespace GameClientXNA
             drawingManager.DrawGame( gameTime);
         }
 
-
+        
         private void UpdateGame(GameTime gameTime)
         {
             ProcessKeyboardGame();
             Queue<String> recievedData = networkClient.RecievedData;
             while (recievedData.Count > 0)
-                gameDetail.processMsg(recievedData.Dequeue());
+                gameDetail.processMsg(recievedData.Dequeue(),gameTime.TotalGameTime);
+
+            gameDetail.update(gameTime.TotalGameTime);
 
             waitCount = (waitCount+1)%59;
-            if (waitCount == 0) networkClient.Send(nextMove);
+            //if (waitCount == 0) networkClient.Send(nextMove);
         }
 
         private void ProcessKeyboardGame()

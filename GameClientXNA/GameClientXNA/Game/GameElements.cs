@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace GameClientXNA
         public int x;
         public int y;
         public int lifeTime;
+        public TimeSpan arrivedTime;
     }
 
     public class Coin
@@ -31,6 +33,7 @@ namespace GameClientXNA
         public int lifeTime;
         public int x;
         public int y;
+        public TimeSpan arrivedTime;
 
     }
 
