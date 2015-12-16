@@ -53,6 +53,7 @@ namespace GameClientXNA
             stoneTexture = content.Load<Texture2D>("stone");
             waterTexture = content.Load<Texture2D>("water");
             brickTexture = content.Load<Texture2D>("brick");
+            //blockTexture = content.Load<Texture2D>("block");
             blockTexture = new Texture2D(device, 30, 30);
             Color[] blockData = new Color[blockTexture.Width * blockTexture.Height];
             for (int i = 0; i < blockData.Length; i++)
@@ -88,13 +89,11 @@ namespace GameClientXNA
 
             foreach (dynamic player in gameDetail.players)
             {
+                if(player!=null)
                 DrawPlayer(player);
             }
-
-            
-
-
         }
+
         private void DrawScenery()
         {
             Rectangle screenRectangle = new Rectangle(0, 0, screenWidth, screenHeight);
@@ -103,7 +102,7 @@ namespace GameClientXNA
 
         public void DrawBlock(Block b)
         {
-            spriteBatch.Draw(blockTexture, new Vector2(b.x * 35, b.y * 35), Color.White);
+            spriteBatch.Draw(blockTexture, new Rectangle(b.x * 35, b.y * 35, 30, 30), null, Color.White);
         }
 
         public void DrawBlock(Brick b)
@@ -123,10 +122,7 @@ namespace GameClientXNA
 
         public void DrawPlayer(Player p)
         {
-            //(float)((Math.PI/2)*p.direction+ Math.PI / 2 )
-            //spriteBatch.Draw(tankTexture, new Rectangle(p.x * 35, p.y * 35, 30, 30), null, Color.Gray,0, tankOrigin, SpriteEffects.None, 0);
-            // spriteBatch.Draw(tankTexture, new Rectangle(p.x * 35, p.y * 35, 30, 30), null, Color.White);
-            spriteBatch.Draw(tankTexture, new Vector2(p.x * 35+15, p.y*35 +15 ), null, Color.White, (float)((Math.PI / 2) * p.direction + Math.PI / 2), tankOrigin, float.Parse("0.2") , SpriteEffects.None, 1);
+            spriteBatch.Draw(tankTexture, new Vector2(p.x * 35+15, p.y*35 +15 ), null, Color.White, (float)((Math.PI / 2) * p.direction + Math.PI / 2), tankOrigin, float.Parse("0.2") , SpriteEffects.None, 0);
         }
 
         public void DrawLifePack(LifePack l)
