@@ -36,6 +36,10 @@ namespace GameClientXNA
         //Scene details
         private bool isHome = true;
 
+        //Manual Move
+        string nextMove;
+        int waitCount = 0;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -214,6 +218,9 @@ namespace GameClientXNA
             Queue<String> recievedData = networkClient.RecievedData;
             while (recievedData.Count > 0)
                 gameDetail.processMsg(recievedData.Dequeue());
+
+            waitCount = (waitCount+1)%59;
+            if (waitCount == 0) networkClient.Send(nextMove);
         }
 
         private void ProcessKeyboardGame()
@@ -222,6 +229,26 @@ namespace GameClientXNA
             if (keybState.IsKeyDown(Keys.Escape))
             {
                 isHome = true;
+            }
+            if (keybState.IsKeyDown(Keys.Up))
+            {
+                nextMove = "UP#";
+            }
+            if (keybState.IsKeyDown(Keys.Down))
+            {
+                nextMove = "DOWN#";
+            }
+            if (keybState.IsKeyDown(Keys.Left))
+            {
+                nextMove = "LEFT#";
+            }
+            if (keybState.IsKeyDown(Keys.Right))
+            {
+                nextMove = "RIGHT#";
+            }
+            if (keybState.IsKeyDown(Keys.Space))
+            {
+                nextMove = "SHOOT#";
             }
         }
         #endregion

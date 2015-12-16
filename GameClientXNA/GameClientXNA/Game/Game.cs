@@ -174,23 +174,18 @@ namespace GameClientXNA
 
                     else
                     {
-                        String[] details2 = arr[i].Split(';');
-                        for (int k = 0; k < details2.Length; k++)
-                        {
-                            String [] xyHealth = details2[i].Split(',');
-                            int x = int.Parse(xyHealth[0].ToString());
-                            int y = int.Parse(xyHealth[1].ToString());
-                            int health = int.Parse(xyHealth[1].ToString());
+                        //String[] details2 = arr[i].Split(';');
+                        //for (int k = 0; k < details2.Length; k++)
+                        //{
+                        //    String [] xyHealth = details2[i].Split(',');
+                        //    int x = int.Parse(xyHealth[0].ToString());
+                        //    int y = int.Parse(xyHealth[1].ToString());
+                        //    int health = int.Parse(xyHealth[1].ToString());
 
-                            (blocks[x, y] as Brick).health = health;
-                            (blocks[x, y] as Brick).x = x;
-                            (blocks[x, y] as Brick).y = y;
-
-                        }
-
-
-
-
+                        //    (blocks[x, y] as Brick).health = health;
+                        //    (blocks[x, y] as Brick).x = x;
+                        //    (blocks[x, y] as Brick).y = y;
+                        //}
                     }
 
                 }
