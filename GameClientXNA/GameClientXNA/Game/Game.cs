@@ -178,7 +178,7 @@ namespace GameClientXNA
             {
                 String[] arr = data.Split(':', '#');
 
-                for (int i = 0; i < arr.Length-1; i++)
+                for (int i = 0; i < arr.Length - 1; i++)
                 {
                     if (arr[i].Length > 1 && arr[i][0] == 'P')
                     {
@@ -206,7 +206,7 @@ namespace GameClientXNA
                         String[] details2 = arr[i].Split(';');
                         for (int k = 0; k < details2.Length; k++)
                         {
-                            String [] xyHealth = details2[i].Split(',');
+                            String[] xyHealth = details2[i].Split(',');
                             int x = int.Parse(xyHealth[0].ToString());
                             int y = int.Parse(xyHealth[1].ToString());
                             int damage = int.Parse(xyHealth[2].ToString());
@@ -259,6 +259,31 @@ namespace GameClientXNA
                 }
 
 
+                //After global update, check if there is a pile on a player's location then delete it
+                foreach (dynamic player in players)
+                {
+                    if (player == null) continue;
+                    // Remove life packs
+                    for (int i = 0; i < lifePacks.Count; i++)
+                    {
+                        if (lifePacks[i].x==player.x &&  lifePacks[i].y == player.y)
+                        {
+                            lifePacks.RemoveAt(i);
+                            i--;
+                        }
+                    }
+                    // remove coins
+                    for (int i = 0; i < coins.Count; i++)
+                    {
+                        //Console.WriteLine(coins[i].lifeTime);
+                        if (coins[i].x == player.x && coins[i].y == player.y)
+                        {
+                            coins.RemoveAt(i);
+                            i--;
+                        }
+                    }
+
+                }
             }
 
             //By Janaka---------------------------------------------------------
@@ -267,7 +292,7 @@ namespace GameClientXNA
                 //Game started
             }
             //Add others
-            else if(data == Constant.S2C_TOOEARLY)
+            else if (data == Constant.S2C_TOOEARLY)
             {
 
                 //Messages which can't be recognized
