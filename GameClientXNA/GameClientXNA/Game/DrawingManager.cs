@@ -102,37 +102,37 @@ namespace GameClientXNA
 
         public void DrawBlock(Block b)
         {
-            spriteBatch.Draw(blockTexture, new Rectangle(b.x * 35, b.y * 35, 30, 30), null, Color.White);
+            spriteBatch.Draw(blockTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
         }
 
         public void DrawBlock(Brick b)
         {
-            spriteBatch.Draw(brickTexture, new Rectangle(b.x * 35, b.y * 35, 30, 30), null, Color.White);
+            spriteBatch.Draw(brickTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
         }
 
         public void DrawBlock(Stone b)
         {
-            spriteBatch.Draw(stoneTexture, new Rectangle(b.x * 35, b.y * 35, 30, 30), null, Color.White);
+            spriteBatch.Draw(stoneTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
         }
 
         public void DrawBlock(Water b)
         {
-            spriteBatch.Draw(waterTexture, new Rectangle(b.x * 35, b.y * 35, 30, 30), null, Color.White);
+            spriteBatch.Draw(waterTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
         }
 
         public void DrawPlayer(Player p)
         {
-            spriteBatch.Draw(tankTexture, new Vector2(p.x * 35+15, p.y*35 +15 ), null, Color.White, (float)((Math.PI / 2) * p.direction + Math.PI / 2), tankOrigin, float.Parse("0.2") , SpriteEffects.None, 0);
+            spriteBatch.Draw(tankTexture, new Vector2(p.x * 50+23, p.y*50 +23 ), null, Color.White, (float)((Math.PI / 2) * p.direction + Math.PI / 2), tankOrigin, float.Parse("0.3") , SpriteEffects.None, 0);
         }
 
         public void DrawLifePack(LifePack l)
         {
-            spriteBatch.Draw(lifePackTexture, new Rectangle(l.x * 35, l.y * 35, 30, 30), null, Color.White);
+            spriteBatch.Draw(lifePackTexture, new Rectangle(l.x * 50, l.y * 50, 45, 45), null, Color.White);
         }
 
         public void DrawCoin(Coin c)
         {
-            spriteBatch.Draw(coinTexture, new Rectangle(c.x * 35, c.y * 35, 30, 30), null, Color.White);
+            spriteBatch.Draw(coinTexture, new Rectangle(c.x * 50, c.y * 50, 45, 45), null, Color.White);
         }
     }
 }
