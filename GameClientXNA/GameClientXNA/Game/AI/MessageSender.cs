@@ -17,7 +17,7 @@ namespace GameClientXNA.Game.AI
 
         public MessageSender(NetworkClient networkClient)
         {
-            timeGap = new TimeSpan(0,0,0,0,990);
+            timeGap = new TimeSpan(0,0,0,0,1010);
             this.networkClient = networkClient;
             isMsgSent = true;
         }

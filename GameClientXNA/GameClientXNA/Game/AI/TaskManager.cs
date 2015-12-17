@@ -70,7 +70,7 @@ namespace GameClientXNA.Game.AI
             }
 
             //Return null if we can't find a possible path
-            if (parents[to] <0) return null;
+            if (parents[to] <0) return path;
 
 
             //Find the path
@@ -87,13 +87,35 @@ namespace GameClientXNA.Game.AI
 
         public static String getMove(GameDetail game)
         {
-            if (game.lifePacks.Count == 0) return Constant.SHOOT;
 
+            //Find the closest coin
+            int currentLoc = game.thisPlayer.x * 10 + game.thisPlayer.y;
+            int minLoc = currentLoc;
+            int minsDist = 100;
+            foreach (dynamic coin in game.coins)
+            {
+                int dist = getPath(game, currentLoc, coin.x * 10 + coin.y).Count;
+                if (dist < minsDist)
+                {
+                    minLoc = coin.x * 10 + coin.y;
+                    minsDist = dist;
+                }
+            }
 
+            foreach (dynamic lifePack in game.lifePacks)
+            {
+                int dist = getPath(game, currentLoc, lifePack.x * 10 + lifePack.y).Count;
+                if (dist < minsDist)
+                {
+                    minLoc = lifePack.x * 10 + lifePack.y;
+                    minsDist = dist;
+                }
+            }
 
+            if (minsDist == 100) return Constant.SHOOT;
 
             int from = game.thisPlayer.x * 10 + game.thisPlayer.y;
-            int to = game.lifePacks[0].x * 10 + game.lifePacks[0].y;
+            int to = minLoc;
 
             List<int> path = getPath(game, from, to);
 
