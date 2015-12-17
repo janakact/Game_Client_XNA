@@ -83,5 +83,32 @@ namespace GameClientXNA.Game.AI
             path.Reverse();
             return path;
         }
+
+
+        public static String getMove(GameDetail game)
+        {
+            if (game.lifePacks.Count == 0) return Constant.SHOOT;
+
+
+
+
+            int from = game.thisPlayer.x * 10 + game.thisPlayer.y;
+            int to = game.lifePacks[0].x * 10 + game.lifePacks[0].y;
+
+            List<int> path = getPath(game, from, to);
+
+            if (path == null || path.Count == 0)
+            {
+                Console.WriteLine("Error:" + from + " " + to);
+                return Constant.SHOOT;
+            }
+
+            Console.WriteLine(path[0]);
+
+            if (path[0] - from == 10) return Constant.RIGHT;
+            if (path[0] - from == -10) return Constant.LEFT;
+            if (path[0] - from == 1) return Constant.DOWN;
+            else  return Constant.UP;
+        }
     }
 }

@@ -49,8 +49,7 @@ namespace GameClientXNA
             // Remove life packs
             for (int i = 0; i < lifePacks.Count; i++)
             {
-                Console.WriteLine(i+"\t"+(time - lifePacks[i].arrivedTime).Milliseconds+" "+ lifePacks[i].lifeTime);
-                int timeGap = (time - lifePacks[i].arrivedTime).Milliseconds + 1000 * ((time - lifePacks[i].arrivedTime).Seconds);
+                 int timeGap = (time - lifePacks[i].arrivedTime).Milliseconds + 1000 * ((time - lifePacks[i].arrivedTime).Seconds);
                 if (timeGap > lifePacks[i].lifeTime)
                 {
                     lifePacks.RemoveAt(i);
