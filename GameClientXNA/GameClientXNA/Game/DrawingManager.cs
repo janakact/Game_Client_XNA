@@ -122,7 +122,7 @@ namespace GameClientXNA
 
         public void DrawPlayer(Player p)
         {
-            spriteBatch.Draw(tankTexture, new Vector2(p.x * 50+23, p.y*50 +23 ), null, Color.White, (float)((Math.PI / 2) * p.direction + Math.PI / 2), tankOrigin, float.Parse("0.3") , SpriteEffects.None, 0);
+            spriteBatch.Draw(tankTexture, new Vector2(p.x * 50+23, p.y*50 +23 ), null, p.colour, (float)((Math.PI / 2) * p.direction + Math.PI / 2), tankOrigin, float.Parse("0.3") , SpriteEffects.None, 0);
         }
 
         public void DrawLifePack(LifePack l)

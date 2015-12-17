@@ -17,6 +17,7 @@ namespace GameClientXNA
         public int isShot;
         public int direction;
         public int points;
+        public Color colour;
     }
 
     public class LifePack

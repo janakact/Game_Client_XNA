@@ -16,15 +16,16 @@ namespace GameClientXNA
         public List<LifePack> lifePacks;
         //public List<Block> blocks;
         public Block[,] blocks;
-        
+        public Color[] colours;
+
         public GameDetail()
         {
             players = new Player[5];
             thisPlayer = new Player();
             coins = new List<Coin>();
             lifePacks = new List<LifePack>();
-            blocks = new Block [10,10];
-            
+            blocks = new Block[10, 10];
+            colours = new Color[]{Color.MistyRose, Color.LightCyan, Color.PaleGreen, Color.Khaki, Color.PaleTurquoise};
 
 
             grid = new string[10, 10];
@@ -197,6 +198,7 @@ namespace GameClientXNA
                             players[j].health = int.Parse(details1[4]);
                             players[j].coins = int.Parse(details1[5]);
                             players[j].points = int.Parse(details1[6]);
+                            players[j].colour = colours[j];
 
                         }
                     }
