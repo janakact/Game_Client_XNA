@@ -24,9 +24,7 @@ namespace GameClientXNA
             coins = new List<Coin>();
             lifePacks = new List<LifePack>();
             blocks = new Block [10,10];
-
-            //initializing the list
-            for (int i = 0; i < 5; i++) { players[i] = new Player(); }
+            
 
 
             grid = new string[10, 10];

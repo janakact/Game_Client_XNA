@@ -175,11 +175,15 @@ namespace GameClientXNA
         private KeyboardDispatcher keyboard_dispatcher;
         private TextBox textboxAddress;
         private Texture2D loadingTexture;
+        private Texture2D homeTexture;
 
         public void DrawHome(GameTime gameTime)
         {
+            homeTexture = Content.Load<Texture2D>("home");
+            spriteBatch.Draw(homeTexture, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
             textboxAddress.Draw(spriteBatch, gameTime);
-            spriteBatch.Draw(loadingTexture, new Vector2(0, 0), Color.White);
+            
+            //spriteBatch.Draw(loadingTexture, new Vector2(0, 0), Color.White);
             //spriteBatch.DrawString(font, textboxAddress.Text, new Vector2(20, 45), Color.White);
         }
 
