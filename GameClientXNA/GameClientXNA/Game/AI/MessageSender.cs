@@ -36,7 +36,6 @@ namespace GameClientXNA.Game.AI
         {
             message = msg;
             isMsgSent = false;
-            sentTime = new TimeSpan(0, 0, 0);
         }
 
         public void markSendFailed()

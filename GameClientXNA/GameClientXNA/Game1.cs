@@ -248,6 +248,10 @@ namespace GameClientXNA
 
             waitCount = (waitCount+1)%59;
             //if (waitCount == 0) networkClient.Send(nextMove);
+
+            //AI MOve
+
+            msgSender.setMessage( Game.AI.TaskManager.getMove(gameDetail));
         }
 
         private void ProcessKeyboardGame()
