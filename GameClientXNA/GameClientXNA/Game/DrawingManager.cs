@@ -14,6 +14,7 @@ namespace GameClientXNA
     //Drawing manager draws tha game
     class DrawingManager
     {
+        //Game elements
         SpriteBatch spriteBatch;
         GameTime gameTime;
         GraphicsDeviceManager graphics;
@@ -31,6 +32,8 @@ namespace GameClientXNA
         Texture2D tankTexture;
         Texture2D lifePackTexture;
         Texture2D coinTexture;
+
+        //Tank Origin
         Vector2 tankOrigin;
         
         public DrawingManager(GraphicsDeviceManager graphics, ContentManager content,GameDetail gameDetail)
@@ -72,21 +75,25 @@ namespace GameClientXNA
         {
             DrawScenery();
             this.gameTime = gameTime;
+
             //Draw grid
             for (int i = 0; i < 10; i++)
                 for (int j = 0; j < 10; j++)
                     DrawBlock(gameDetail.blocks[i, j] as dynamic);
 
+            //Draw LifePacks
             foreach (dynamic lifePack in gameDetail.lifePacks)
             {
                 DrawLifePack(lifePack);
             }
 
+            //Draw Coins
             foreach (dynamic coin in gameDetail.coins)
             {
                 DrawCoin(coin);
             }
 
+            //Draw Players
             foreach (dynamic player in gameDetail.players)
             {
                 if(player!=null)
