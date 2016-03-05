@@ -19,14 +19,13 @@ namespace GameClientXNA.Game.AI
                 items.Add(new int[] { c.x, c.y, c.value, ((time - c.arrivedTime).Seconds) });
             }
 
-            List<int[]> playerDistances = new List<int[]>();
+            //List<int[]> playerDistances = new List<int[]>();
             int[] moves = new int[items.Count];
 
-            foreach (Player p in game.players)
-            {
+            
                 int[,,] grid = new int[10, 10, 4];
 
-                int[] start = new int[] { p.x, p.y, p.direction };
+                int[] start = new int[] { game.thisPlayer.x, game.thisPlayer.y, game.thisPlayer.direction };
 
                 Queue<int[]> queue = new Queue<int[]>();
                 queue.Enqueue(start);
@@ -94,59 +93,26 @@ namespace GameClientXNA.Game.AI
                         }
                     }
                     distances[i] = min;
-                    if(p.name==game.thisPlayer.name)
-                    {
-                        moves[i] = move;
-                    }
-
-                    
+                    moves[i] = move;
+                   
                 }
-                playerDistances.Add(distances);
-            }
+            
 
             if(items.Count == 0)
                 return Constant.SHOOT;
 
-
-            int[] minByOthers = new int[items.Count];
-            for (int i = 0; i < items.Count; i++) minByOthers[i] = 9000;
-
-            int thisPlayerId = 0;
-            for(int i=0; i<game.players.Count; i++)
-            {
-                Player p = game.players[i];
-                if (p.name == game.thisPlayer.name)
-                {
-                    thisPlayerId = i;
-                    continue;
-                }
-
-                for (int j = 0; j < items.Count; j++)
-                    if(minByOthers[j]>playerDistances[i][j])
-                        minByOthers[j] = playerDistances[i][j];
-            }
-
+            
 
             int maxItemValue = 0, itemIndex = 0, minSteps = 9000; ;
             
             for(int i=0; i< items.Count; i++)
             {
                 //if (items[i][3] > playerDistances[thisPlayerId][i]) minByOthers[i] = 0;
-
-               // if (playerDistances[thisPlayerId][i] <= minByOthers[i])
-                //{
-                    if(minSteps> playerDistances[thisPlayerId][i])
+                    if(minSteps> distances[i])
                     {
-                        minSteps = playerDistances[thisPlayerId][i];
+                        minSteps = distances[i];
                         itemIndex = i;
                     }
-                   
-                //}
-                //if(maxItemValue< items[i][2])
-                //{
-                //    itemIndex = i;
-                //    maxItemValue = items[i][2];
-                //}
             }
             
 
