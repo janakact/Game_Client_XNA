@@ -10,10 +10,12 @@ namespace GameClientXNA.Game.AI
         public static String getMoveNew(GameDetail game, TimeSpan time)
         {
             List<int[]> items = new List<int[]>();
-            foreach(LifePack l in game.lifePacks)
-            {
-                items.Add(new int[] { l.x, l.y, 5000,  ((time - l.arrivedTime).Seconds)   });
-            }
+            if(game.thisPlayer.health>50 || game.coins.Count==0)
+                foreach(LifePack l in game.lifePacks)
+                {
+                    items.Add(new int[] { l.x, l.y, 5000,  ((time - l.arrivedTime).Seconds)   });
+                }
+
             foreach (Coin c in game.coins)
             {
                 items.Add(new int[] { c.x, c.y, c.value, ((time - c.arrivedTime).Seconds) });
@@ -96,11 +98,21 @@ namespace GameClientXNA.Game.AI
                     moves[i] = move;
                    
                 }
-            
 
-            if(items.Count == 0)
+
+            if (items.Count == 0)
+            {
+                if (game.thisPlayer.direction == 0 && game.thisPlayer.y == 0)
+                    return Constant.DOWN;
+                if (game.thisPlayer.direction == 1 && game.thisPlayer.x == 9)
+                    return Constant.LEFT;
+                if (game.thisPlayer.direction == 2 && game.thisPlayer.y == 9)
+                    return Constant.UP;
+                if (game.thisPlayer.direction == 3 && game.thisPlayer.x == 0)
+                    return Constant.RIGHT;
                 return Constant.SHOOT;
 
+            }
             
 
             int maxItemValue = 0, itemIndex = 0, minSteps = 9000; ;
@@ -114,7 +126,27 @@ namespace GameClientXNA.Game.AI
                         itemIndex = i;
                     }
             }
+
+            //If line of sight shoot
+            int locx = game.thisPlayer.x, locy = game.thisPlayer.y;
+            if (game.thisPlayer.direction == 0 && locy > 0) locy--;
+           
+            if (game.thisPlayer.direction == 1 && locx < 9) locx++;
             
+            if (game.thisPlayer.direction == 2 && locy < 9) locy++;
+            
+            if (game.thisPlayer.direction == 3 && locx > 0) locx--;
+            
+            foreach (Player p in game.players)
+                if (p.x == locx && p.y == locy && p.health > 0 && p.name!=game.thisPlayer.name) return Constant.SHOOT;
+
+
+
+
+            for (int i=0; i<game.players.Count; i++)
+            {
+               
+            }
 
 
             int finalMove = moves[itemIndex];
