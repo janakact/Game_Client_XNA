@@ -16,6 +16,10 @@ namespace GameClientXNA
     {
         //Game elements
         SpriteBatch spriteBatch;
+        SpriteFont font;
+        SpriteFont fontH1;
+        SpriteFont fontH2;
+
         GameTime gameTime;
         GraphicsDeviceManager graphics;
         GraphicsDevice device;
@@ -56,6 +60,9 @@ namespace GameClientXNA
             stoneTexture = content.Load<Texture2D>("stone");
             waterTexture = content.Load<Texture2D>("water");
             brickTexture = content.Load<Texture2D>("brick");
+            font = content.Load<SpriteFont>("font");
+            fontH1 = content.Load<SpriteFont>("fontH1");
+            fontH2 = content.Load<SpriteFont>("fontH2");
             //blockTexture = content.Load<Texture2D>("block");
             blockTexture = new Texture2D(device, 30, 30);
             Color[] blockData = new Color[blockTexture.Width * blockTexture.Height];
@@ -97,7 +104,19 @@ namespace GameClientXNA
             foreach (dynamic player in gameDetail.players)
             {
                 if(player!=null)
-                DrawPlayer(player);
+                    DrawPlayer(player);
+            }
+
+            int x = 20;
+
+            DrawTableHeaders();
+
+            foreach (dynamic player in gameDetail.players)
+            {
+                
+                if (player != null)
+                    DrawText(player,x);
+                x = x + 20;
             }
         }
 
@@ -141,5 +160,24 @@ namespace GameClientXNA
         {
             spriteBatch.Draw(coinTexture, new Rectangle(c.x * 50, c.y * 50, 45, 45), null, Color.White);
         }
+
+        private void DrawTableHeaders()
+        {
+            spriteBatch.DrawString(fontH2, "Scoreboard ", new Vector2(650, 40), Color.DarkGoldenrod);
+            spriteBatch.DrawString(fontH1, "Player ", new Vector2(550, 80), Color.White);
+            spriteBatch.DrawString(fontH1, "Points ", new Vector2(650, 80), Color.White);
+            spriteBatch.DrawString(fontH1, "Coins ($) " , new Vector2(750, 80), Color.White);
+            spriteBatch.DrawString(fontH1, "Health (%) ", new Vector2(850, 80), Color.White);
+            
+        }
+
+        private void DrawText(Player p, int x)
+        {
+            spriteBatch.DrawString(font, p.name, new Vector2(550, 40 + x), p.colour);
+            spriteBatch.DrawString(font, p.points.ToString(), new Vector2(650, 80 + x), p.colour);
+            spriteBatch.DrawString(font, p.coins.ToString(), new Vector2(750, 80 + x), p.colour);
+            spriteBatch.DrawString(font, p.health.ToString(), new Vector2(850, 80 + x), p.colour);
+        }
+
     }
 }

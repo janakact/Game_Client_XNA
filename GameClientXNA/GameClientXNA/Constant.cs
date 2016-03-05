@@ -62,6 +62,7 @@ namespace GameClientXNA
         public const string COIN = "C";
         #endregion
 
+
         public static void Load()
         {
 

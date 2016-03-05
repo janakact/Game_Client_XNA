@@ -48,7 +48,7 @@ namespace GameClientXNA
             // Remove life packs
             for (int i = 0; i < lifePacks.Count; i++)
             {
-                 int timeGap = (time - lifePacks[i].arrivedTime).Milliseconds + 1000 * ((time - lifePacks[i].arrivedTime).Seconds);
+                int timeGap = (time - lifePacks[i].arrivedTime).Milliseconds + 1000 * ((time - lifePacks[i].arrivedTime).Seconds);
                 if (timeGap > lifePacks[i].lifeTime)
                 {
                     lifePacks.RemoveAt(i);
@@ -67,8 +67,8 @@ namespace GameClientXNA
                 }
             }
 
-
         }
+
         public void processMsg(String data, TimeSpan time)
 
         {
@@ -77,7 +77,7 @@ namespace GameClientXNA
             //To Pani - update the grid[] as required.
             //This is the parser. add if conditions to identify messages and do the required process
 
-            if (data.Length < 2) //Pre test for invalid messages :: Improve the condition
+            if (data.Length < 2) //Pre test for invalid messages
             {
                 //Invalid message
                 return;

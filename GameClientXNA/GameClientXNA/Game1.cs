@@ -61,7 +61,7 @@ namespace GameClientXNA
 
             //Graphic initialize
             device = graphics.GraphicsDevice;
-            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferWidth = 1000;
             graphics.PreferredBackBufferHeight = 600;
 
             screenWidth = graphics.PreferredBackBufferWidth;
