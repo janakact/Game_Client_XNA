@@ -7,6 +7,14 @@ namespace GameClientXNA.Game.AI
 {
     public class TaskManager
     {
+        public static String getMoveNew(GameDetail game )
+        {
+
+            return Constant.SHOOT;
+        }
+
+
+
         public static List<int> getPath(GameDetail game,int from, int to)
         {
             List<int> path = new List<int>();

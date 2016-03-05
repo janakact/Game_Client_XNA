@@ -200,8 +200,10 @@ namespace GameClientXNA
 
         private void DrawText(Player p, int x)
         {
+            string name = p.name;
+            if (p.name == gameDetail.thisPlayer.name) name = "Me (" + p.name + ")";
 
-            spriteBatch.DrawString(font, p.name, new Vector2(550, 80 + x), p.colour);
+            spriteBatch.DrawString(font, name, new Vector2(550, 80 + x), p.colour);
             spriteBatch.DrawString(font, p.points.ToString(), new Vector2(650, 80 + x), p.colour);
             spriteBatch.DrawString(font, p.coins.ToString(), new Vector2(750, 80 + x), p.colour);
             spriteBatch.DrawString(font, p.health.ToString(), new Vector2(850, 80 + x), p.colour);
