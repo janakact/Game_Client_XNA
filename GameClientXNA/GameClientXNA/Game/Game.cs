@@ -107,7 +107,8 @@ namespace GameClientXNA
 
                 //Player details---------------------
                 thisPlayer.name = arr[1];
-                thisPlayer.colour = Color.PaleGreen;
+                thisPlayer.colour = Color.Green;
+                
                 players[int.Parse(arr[1][1].ToString())] = thisPlayer;
 
                 //Console.WriteLine(thisPlayer.name);
