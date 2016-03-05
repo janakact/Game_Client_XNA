@@ -19,6 +19,7 @@ namespace GameClientXNA
         SpriteFont font;
         SpriteFont fontH1;
         SpriteFont fontH2;
+        SpriteFont fontDetails;
 
         GameTime gameTime;
         GraphicsDeviceManager graphics;
@@ -63,6 +64,7 @@ namespace GameClientXNA
             font = content.Load<SpriteFont>("font");
             fontH1 = content.Load<SpriteFont>("fontH1");
             fontH2 = content.Load<SpriteFont>("fontH2");
+            fontDetails = content.Load<SpriteFont>("fontDetails");
             //blockTexture = content.Load<Texture2D>("block");
             blockTexture = new Texture2D(device, 30, 30);
             Color[] blockData = new Color[blockTexture.Width * blockTexture.Height];
@@ -92,12 +94,19 @@ namespace GameClientXNA
             foreach (dynamic lifePack in gameDetail.lifePacks)
             {
                 DrawLifePack(lifePack);
+                DrawLifePackDetails(lifePack);
             }
+
+            //foreach (dynamic lifePack in gameDetail.lifePacks)
+            //{
+            //    DrawLifePackLifeTime(lifePack);
+            //}
 
             //Draw Coins
             foreach (dynamic coin in gameDetail.coins)
             {
                 DrawCoin(coin);
+                DrawCoinDetails(coin);
             }
 
             //Draw Players
@@ -133,7 +142,25 @@ namespace GameClientXNA
 
         public void DrawBlock(Brick b)
         {
-            spriteBatch.Draw(brickTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
+            if (b.health == 100)
+                spriteBatch.Draw(brickTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
+            else if (b.health == 75)
+            {
+                spriteBatch.Draw(blockTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
+                spriteBatch.Draw(brickTexture, new Rectangle(b.x * 50, b.y * 50, 45, 33), null, Color.White);
+            }
+            else if (b.health == 50)
+            {
+                spriteBatch.Draw(blockTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
+                spriteBatch.Draw(brickTexture, new Rectangle(b.x * 50, b.y * 50, 45, 22), null, Color.White);
+            }
+            else if (b.health == 25)
+            {
+                spriteBatch.Draw(blockTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
+                spriteBatch.Draw(brickTexture, new Rectangle(b.x * 50, b.y * 50, 45, 11), null, Color.White);
+            }
+            else
+                spriteBatch.Draw(blockTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
         }
 
         public void DrawBlock(Stone b)
@@ -166,17 +193,31 @@ namespace GameClientXNA
             spriteBatch.DrawString(fontH2, "Scoreboard ", new Vector2(650, 40), Color.DarkGoldenrod);
             spriteBatch.DrawString(fontH1, "Player ", new Vector2(550, 80), Color.White);
             spriteBatch.DrawString(fontH1, "Points ", new Vector2(650, 80), Color.White);
-            spriteBatch.DrawString(fontH1, "Coins ($) " , new Vector2(750, 80), Color.White);
-            spriteBatch.DrawString(fontH1, "Health (%) ", new Vector2(850, 80), Color.White);
+            spriteBatch.DrawString(fontH1, "Coins ($)" , new Vector2(750, 80), Color.White);
+            spriteBatch.DrawString(fontH1, "Health (%)", new Vector2(850, 80), Color.White);
             
         }
 
         private void DrawText(Player p, int x)
         {
-            spriteBatch.DrawString(font, p.name, new Vector2(550, 40 + x), p.colour);
+            spriteBatch.DrawString(font, p.name, new Vector2(550, 80 + x), p.colour);
             spriteBatch.DrawString(font, p.points.ToString(), new Vector2(650, 80 + x), p.colour);
             spriteBatch.DrawString(font, p.coins.ToString(), new Vector2(750, 80 + x), p.colour);
             spriteBatch.DrawString(font, p.health.ToString(), new Vector2(850, 80 + x), p.colour);
+        }
+
+        private void DrawLifePackDetails(LifePack l)
+        {
+            spriteBatch.DrawString(fontDetails, "Life", new Vector2(l.x * 50, l.y * 50), Color.Black);
+            spriteBatch.DrawString(fontDetails, "  Pack", new Vector2(l.x * 50, l.y * 50 + 10), Color.Black);
+            spriteBatch.DrawString(fontDetails, l.lifeTime.ToString(), new Vector2(l.x*50, l.y*50+30), Color.Black);
+        }
+
+        private void DrawCoinDetails(Coin c)
+        {
+            spriteBatch.DrawString(fontDetails, "Coins", new Vector2(c.x * 50, c.y * 50), Color.Black);
+            spriteBatch.DrawString(fontDetails, c.value.ToString() + "$", new Vector2(c.x * 50, c.y * 50 + 20), Color.Black);
+            spriteBatch.DrawString(fontDetails, c.lifeTime.ToString(), new Vector2(c.x * 50, c.y * 50 + 30), Color.Black);
         }
 
     }
