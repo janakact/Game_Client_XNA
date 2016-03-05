@@ -12,7 +12,7 @@ namespace GameClientXNA
         public String name;
         public int x;
         public int y;
-        public int health;
+        public int health = 100;
         public int coins;
         public int isShot;
         public int direction;

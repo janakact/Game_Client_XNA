@@ -123,7 +123,7 @@ namespace GameClientXNA
             foreach (dynamic player in gameDetail.players)
             {
                 
-                if (player != null)
+                if (player.name != null)
                     DrawText(player,x);
                 x = x + 20;
             }
@@ -200,6 +200,7 @@ namespace GameClientXNA
 
         private void DrawText(Player p, int x)
         {
+
             spriteBatch.DrawString(font, p.name, new Vector2(550, 80 + x), p.colour);
             spriteBatch.DrawString(font, p.points.ToString(), new Vector2(650, 80 + x), p.colour);
             spriteBatch.DrawString(font, p.coins.ToString(), new Vector2(750, 80 + x), p.colour);

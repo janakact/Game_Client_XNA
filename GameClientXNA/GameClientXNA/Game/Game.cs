@@ -10,7 +10,7 @@ namespace GameClientXNA
    public class GameDetail
     {
         public string[,] grid;
-        public Player[] players;// = new List<Player>();
+        public List<Player> players ;//[] players;// = new List<Player>();
         public Player thisPlayer;
         public List<Coin> coins;
         public List<LifePack> lifePacks;
@@ -20,12 +20,17 @@ namespace GameClientXNA
 
         public GameDetail()
         {
-            players = new Player[5];
+            // players = new Player[5];
+
+            players = new List<Player>();
+            for (int i = 0; i < 5; i++)
+                players.Add(new Player());
+
             thisPlayer = new Player();
             coins = new List<Coin>();
             lifePacks = new List<LifePack>();
             blocks = new Block[10, 10];
-            colours = new Color[]{Color.MistyRose, Color.LightCyan, Color.PaleGreen, Color.Khaki, Color.PaleTurquoise};
+            colours = new Color[]{Color.MistyRose, Color.LightCyan, Color.PaleGreen, Color.Khaki, Color.PaleVioletRed};
 
 
             grid = new string[10, 10];
@@ -66,6 +71,16 @@ namespace GameClientXNA
                     i--;
                 }
             }
+
+            //// remove players
+            //for (int i = 0; i < players.Count; i++)
+            //{
+            //    if (players[i].health <= 0)
+            //    {
+            //        players.RemoveAt(i);
+            //        i--;
+            //    }
+            //}
 
         }
 
@@ -186,7 +201,7 @@ namespace GameClientXNA
                         String[] details1 = arr[i].Split(';');
 
                         int j = int.Parse(details1[0][1].ToString());
-                        if (j < 5 && j >= 0)
+                        if (j < players.Count && j >= 0)
                         {
                             if (players[j] == null)
                                 players[j] = new Player();
