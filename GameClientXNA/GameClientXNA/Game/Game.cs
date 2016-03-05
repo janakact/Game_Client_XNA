@@ -62,6 +62,7 @@ namespace GameClientXNA
                     i--;
                 }
             }
+
             // remove coins
             for (int i = 0; i < coins.Count; i++)
             {
@@ -158,6 +159,7 @@ namespace GameClientXNA
                 }
 
             }
+
             //Console.WriteLine(thisPlayer.name);
             if (data.Substring(0, 2) == "S:")
             {
@@ -228,17 +230,11 @@ namespace GameClientXNA
                         String[] details2 = arr[i].Split(';');
                         for (int k = 0; k < details2.Length; k++)
                         {
-                            String[] xyHealth = details2[i].Split(',');
+                            String[] xyHealth = details2[k].Split(',');
                             int x = int.Parse(xyHealth[0].ToString());
                             int y = int.Parse(xyHealth[1].ToString());
                             int damage = int.Parse(xyHealth[2].ToString());
                             int health;
-
-                            if (damage == 0)
-                            {
-                                health = 100;
-                                (blocks[x, y] as Brick).health = health;
-                            }
 
                             if (damage == 0)
                             {
