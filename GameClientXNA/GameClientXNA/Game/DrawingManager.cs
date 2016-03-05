@@ -87,8 +87,17 @@ namespace GameClientXNA
 
             //Draw grid
             for (int i = 0; i < 10; i++)
+            {
                 for (int j = 0; j < 10; j++)
+                {
                     DrawBlock(gameDetail.blocks[i, j] as dynamic);
+                    if (gameDetail.blocks[i, j].GetType() == typeof(Brick))
+                    {
+                        DrawBrickHealth(gameDetail.blocks[i, j] as dynamic);
+                    }
+                        
+                }
+            }
 
             //Draw LifePacks
             foreach (dynamic lifePack in gameDetail.lifePacks)
@@ -142,25 +151,27 @@ namespace GameClientXNA
 
         public void DrawBlock(Brick b)
         {
+            spriteBatch.Draw(blockTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
             if (b.health == 100)
                 spriteBatch.Draw(brickTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
+
             else if (b.health == 75)
             {
-                spriteBatch.Draw(blockTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
+                //spriteBatch.Draw(blockTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
                 spriteBatch.Draw(brickTexture, new Rectangle(b.x * 50, b.y * 50, 45, 33), null, Color.White);
             }
             else if (b.health == 50)
             {
-                spriteBatch.Draw(blockTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
+                //spriteBatch.Draw(blockTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
                 spriteBatch.Draw(brickTexture, new Rectangle(b.x * 50, b.y * 50, 45, 22), null, Color.White);
             }
             else if (b.health == 25)
             {
-                spriteBatch.Draw(blockTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
+                //spriteBatch.Draw(blockTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
                 spriteBatch.Draw(brickTexture, new Rectangle(b.x * 50, b.y * 50, 45, 11), null, Color.White);
             }
-            else
-                spriteBatch.Draw(blockTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
+            //else
+                //spriteBatch.Draw(blockTexture, new Rectangle(b.x * 50, b.y * 50, 45, 45), null, Color.White);
         }
 
         public void DrawBlock(Stone b)
@@ -175,7 +186,8 @@ namespace GameClientXNA
 
         public void DrawPlayer(Player p)
         {
-            spriteBatch.Draw(tankTexture, new Vector2(p.x * 50+23, p.y*50 +23 ), null, p.colour, (float)((Math.PI / 2) * p.direction + Math.PI / 2), tankOrigin, float.Parse("0.3") , SpriteEffects.None, 0);
+            if (p.health >0)
+                spriteBatch.Draw(tankTexture, new Vector2(p.x * 50+23, p.y*50 +23 ), null, p.colour, (float)((Math.PI / 2) * p.direction + Math.PI / 2), tankOrigin, float.Parse("0.3") , SpriteEffects.None, 0);
         }
 
         public void DrawLifePack(LifePack l)
@@ -219,6 +231,14 @@ namespace GameClientXNA
             spriteBatch.DrawString(fontDetails, "Coins", new Vector2(c.x * 50, c.y * 50), Color.Black);
             spriteBatch.DrawString(fontDetails, c.value.ToString() + "$", new Vector2(c.x * 50, c.y * 50 + 20), Color.Black);
             spriteBatch.DrawString(fontDetails, c.lifeTime.ToString(), new Vector2(c.x * 50, c.y * 50 + 30), Color.Black);
+        }
+
+        private void DrawBrickHealth(Brick b)
+        {
+            //spriteBatch.DrawString(fontDetails, "Coins", new Vector2(c.x * 50, c.y * 50), Color.Black);
+            if (b.health != 0)
+                spriteBatch.DrawString(fontDetails, b.health.ToString() + " %", new Vector2(b.x * 50+10, b.y * 50 + 20), Color.Black);
+            //spriteBatch.DrawString(fontDetails, c.lifeTime.ToString(), new Vector2(c.x * 50, c.y * 50 + 30), Color.Black);
         }
 
     }
