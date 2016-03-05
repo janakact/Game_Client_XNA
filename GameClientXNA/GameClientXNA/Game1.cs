@@ -251,7 +251,7 @@ namespace GameClientXNA
 
             //AI MOve
 
-            msgSender.setMessage( Game.AI.TaskManager.getMoveNew(gameDetail));
+            msgSender.setMessage( Game.AI.TaskManager.getMoveNew(gameDetail, gameTime.TotalGameTime));
         }
 
         private void ProcessKeyboardGame()

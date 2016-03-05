@@ -7,16 +7,16 @@ namespace GameClientXNA.Game.AI
 {
     public class TaskManager
     {
-        public static String getMoveNew(GameDetail game)
+        public static String getMoveNew(GameDetail game, TimeSpan time)
         {
             List<int[]> items = new List<int[]>();
             foreach(LifePack l in game.lifePacks)
             {
-                items.Add(new int[] { l.x, l.y, 5000 });
+                items.Add(new int[] { l.x, l.y, 5000,  ((time - l.arrivedTime).Seconds)   });
             }
             foreach (Coin c in game.coins)
             {
-                items.Add(new int[] { c.x, c.y, c.value });
+                items.Add(new int[] { c.x, c.y, c.value, ((time - c.arrivedTime).Seconds) });
             }
 
             List<int[]> playerDistances = new List<int[]>();
@@ -107,7 +107,51 @@ namespace GameClientXNA.Game.AI
             if(items.Count == 0)
                 return Constant.SHOOT;
 
-            int finalMove = moves[0];
+
+            int[] minByOthers = new int[items.Count];
+            for (int i = 0; i < items.Count; i++) minByOthers[i] = 9000;
+
+            int thisPlayerId = 0;
+            for(int i=0; i<game.players.Count; i++)
+            {
+                Player p = game.players[i];
+                if (p.name == game.thisPlayer.name)
+                {
+                    thisPlayerId = i;
+                    continue;
+                }
+
+                for (int j = 0; j < items.Count; j++)
+                    if(minByOthers[j]>playerDistances[i][j])
+                        minByOthers[j] = playerDistances[i][j];
+            }
+
+
+            int maxItemValue = 0, itemIndex = 0, minSteps = 9000; ;
+            
+            for(int i=0; i< items.Count; i++)
+            {
+                //if (items[i][3] > playerDistances[thisPlayerId][i]) minByOthers[i] = 0;
+
+               // if (playerDistances[thisPlayerId][i] <= minByOthers[i])
+                //{
+                    if(minSteps> playerDistances[thisPlayerId][i])
+                    {
+                        minSteps = playerDistances[thisPlayerId][i];
+                        itemIndex = i;
+                    }
+                   
+                //}
+                //if(maxItemValue< items[i][2])
+                //{
+                //    itemIndex = i;
+                //    maxItemValue = items[i][2];
+                //}
+            }
+            
+
+
+            int finalMove = moves[itemIndex];
             if (finalMove == 0) return Constant.UP;
             else if (finalMove == 1) return Constant.RIGHT;
             else if (finalMove == 2) return Constant.DOWN;
