@@ -21,17 +21,19 @@ namespace GameClientXNA
         public GameDetail()
         {
             // players = new Player[5];
-
+            colours = new Color[] { Color.MistyRose, Color.LightCyan, Color.DarkBlue, Color.Khaki, Color.PaleVioletRed };
             players = new List<Player>();
             for (int i = 0; i < 5; i++)
+            {
                 players.Add(new Player());
+                players[i].colour = colours[i];
+            }
 
             thisPlayer = new Player();
             coins = new List<Coin>();
             lifePacks = new List<LifePack>();
             blocks = new Block[10, 10];
-            colours = new Color[]{Color.MistyRose, Color.LightCyan, Color.PaleGreen, Color.Khaki, Color.PaleVioletRed};
-
+            
 
             grid = new string[10, 10];
 
@@ -89,6 +91,7 @@ namespace GameClientXNA
 
         {
 
+            if (data == null) return;
 
             //To Pani - update the grid[] as required.
             //This is the parser. add if conditions to identify messages and do the required process
@@ -106,6 +109,8 @@ namespace GameClientXNA
 
                 //Player details---------------------
                 thisPlayer.name = arr[1];
+                thisPlayer.colour = Color.Green;
+                
                 players[int.Parse(arr[1][1].ToString())] = thisPlayer;
 
                 //Console.WriteLine(thisPlayer.name);
@@ -215,7 +220,7 @@ namespace GameClientXNA
                             players[j].health = int.Parse(details1[4]);
                             players[j].coins = int.Parse(details1[5]);
                             players[j].points = int.Parse(details1[6]);
-                            players[j].colour = colours[j];
+                           
 
                         }
                     }
