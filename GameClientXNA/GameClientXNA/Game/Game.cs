@@ -90,6 +90,7 @@ namespace GameClientXNA
 
         {
 
+            if (data == null) return;
 
             //To Pani - update the grid[] as required.
             //This is the parser. add if conditions to identify messages and do the required process

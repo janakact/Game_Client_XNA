@@ -7,10 +7,113 @@ namespace GameClientXNA.Game.AI
 {
     public class TaskManager
     {
-        public static String getMoveNew(GameDetail game )
+        public static String getMoveNew(GameDetail game)
         {
+            List<int[]> items = new List<int[]>();
+            foreach(LifePack l in game.lifePacks)
+            {
+                items.Add(new int[] { l.x, l.y, 5000 });
+            }
+            foreach (Coin c in game.coins)
+            {
+                items.Add(new int[] { c.x, c.y, c.value });
+            }
 
-            return Constant.SHOOT;
+            List<int[]> playerDistances = new List<int[]>();
+            int[] moves = new int[items.Count];
+
+            foreach (Player p in game.players)
+            {
+                int[,,] grid = new int[10, 10, 4];
+
+                int[] start = new int[] { p.x, p.y, p.direction };
+
+                Queue<int[]> queue = new Queue<int[]>();
+                queue.Enqueue(start);
+                grid[start[0], start[1], start[2]] = 1;
+
+                while (queue.Count > 0)
+                {
+                    int[] current = queue.Dequeue();
+                    int currentDistance = grid[current[0], current[1], current[2]];
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        int[] loc;
+                        if (i != current[2])
+                        {
+                            if (grid[current[0], current[1], i] != 0) continue;
+
+                            loc = new int[] { current[0], current[1], i };
+                            queue.Enqueue(loc);
+                            grid[loc[0], loc[1], loc[2]] = currentDistance + 1;
+
+                            if (currentDistance == 1) grid[loc[0], loc[1], loc[2]] += 10000 * i;
+                        }
+                        else {
+                            loc = null;
+                            //up
+                            if (i == 0 && current[1] > 0)
+                                loc = new int[] { current[0], current[1] - 1, i };
+                            //Down
+                            else if (i == 2 && current[1] < 9)
+                                loc = new int[] { current[0], current[1] + 1, i };
+                            //Right
+                            else if (i == 1 && current[0] < 9)
+                                loc = new int[] { current[0] + 1, current[1], i };
+                            //Left
+                            else if (i == 3 && current[0] > 0)
+                                loc = new int[] { current[0] - 1, current[1], i };
+
+
+                            if (loc != null && grid[loc[0], loc[1], loc[2]] == 0 && game.blocks[loc[0], loc[1]].GetType() == typeof(EmptyBlock))
+                            {
+                                queue.Enqueue(loc);
+                                grid[loc[0], loc[1], loc[2]] = currentDistance + 1;
+                                if (currentDistance == 1) grid[loc[0], loc[1], loc[2]] += 10000 * i;
+                            }
+                        }
+                    }
+                }
+
+
+                int[] distances = new int[items.Count];
+
+                for(int i=0; i<items.Count; i++)
+                { 
+                    int x = items[i][0], y = items[i][1];
+                    // int x = 1, y = 1;
+                    int min = 9000;
+                    int move = 5;
+                    for (int j = 0; j < 4; j++)
+                    {
+                        if (min > (grid[x, y, j] % 10000))
+                        {
+                            min = grid[x, y, j] % 10000;
+                            move = grid[x, y, j] / 10000;
+                        }
+                    }
+                    distances[i] = min;
+                    if(p.name==game.thisPlayer.name)
+                    {
+                        moves[i] = move;
+                    }
+
+                    
+                }
+                playerDistances.Add(distances);
+            }
+
+            if(items.Count == 0)
+                return Constant.SHOOT;
+
+            int finalMove = moves[0];
+            if (finalMove == 0) return Constant.UP;
+            else if (finalMove == 1) return Constant.RIGHT;
+            else if (finalMove == 2) return Constant.DOWN;
+            else if (finalMove == 3) return Constant.LEFT;
+            else return "LOL";
+
         }
 
 
