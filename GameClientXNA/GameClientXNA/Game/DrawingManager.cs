@@ -237,9 +237,8 @@ namespace GameClientXNA
 
         private void DrawBrickHealth(Brick b)
         {
-            //spriteBatch.DrawString(fontDetails, "Coins", new Vector2(c.x * 50, c.y * 50), Color.Black);
             if (b.health != 0)
-                spriteBatch.DrawString(fontDetails, b.health.ToString() + " %", new Vector2(b.x * 50+10, b.y * 50 + 20), Color.Black);
+                spriteBatch.DrawString(fontDetails, b.health.ToString() + "%", new Vector2(b.x * 50+6, b.y * 50 + 20), Color.Black);
             //spriteBatch.DrawString(fontDetails, c.lifeTime.ToString(), new Vector2(c.x * 50, c.y * 50 + 30), Color.Black);
         }
 
