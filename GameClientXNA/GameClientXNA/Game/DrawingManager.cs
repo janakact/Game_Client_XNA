@@ -186,7 +186,7 @@ namespace GameClientXNA
 
         public void DrawPlayer(Player p)
         {
-            if (p.health >0)
+            if (p.health >0 && p.name!=null && p.name[0] == 'P')
                 spriteBatch.Draw(tankTexture, new Vector2(p.x * 50+23, p.y*50 +23 ), null, p.colour, (float)((Math.PI / 2) * p.direction + Math.PI / 2), tankOrigin, float.Parse("0.3") , SpriteEffects.None, 0);
         }
 

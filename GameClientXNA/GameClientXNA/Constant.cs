@@ -11,7 +11,7 @@ namespace GameClientXNA
     class Constant
     {
 
-        public static string SERVER_IP = "127.0.0.1";
+        public static string SERVER_IP = "192.168.1.100";
         public static int SEND_PORT = 6000;
         public static int LISTEN_PORT = 7000;
 
@@ -75,6 +75,7 @@ namespace GameClientXNA
             }
             catch
             {
+                Console.WriteLine("Configuration Failed");
                 return;
             }
 
@@ -93,10 +94,12 @@ namespace GameClientXNA
                 SERVER_IP = configData[0];
                 SEND_PORT = int.Parse(configData[1]);
                 LISTEN_PORT = int.Parse(configData[2]);
+                Console.WriteLine("Configuration Loaded");
                 return true;
             }
             catch
             {
+                Console.WriteLine("Configuration Failed");
                 return false;
             }
 

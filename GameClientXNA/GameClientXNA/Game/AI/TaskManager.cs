@@ -126,26 +126,24 @@ namespace GameClientXNA.Game.AI
                         itemIndex = i;
                     }
             }
-
             //If line of sight shoot
             int locx = game.thisPlayer.x, locy = game.thisPlayer.y;
-            if (game.thisPlayer.direction == 0 && locy > 0) locy--;
-           
-            if (game.thisPlayer.direction == 1 && locx < 9) locx++;
-            
-            if (game.thisPlayer.direction == 2 && locy < 9) locy++;
-            
-            if (game.thisPlayer.direction == 3 && locx > 0) locx--;
-            
-            foreach (Player p in game.players)
-                if (p.x == locx && p.y == locy && p.health > 0 && p.name!=game.thisPlayer.name) return Constant.SHOOT;
 
-
-
-
-            for (int i=0; i<game.players.Count; i++)
+            while (game.blocks[locx, locy].GetType() == typeof(EmptyBlock) || game.blocks[locx, locy].GetType() == typeof(Water))
             {
-               
+                if (game.thisPlayer.direction == 0 && locy > 0) locy--;
+
+                else if (game.thisPlayer.direction == 1 && locx < 9) locx++;
+
+                else if (game.thisPlayer.direction == 2 && locy < 9) locy++;
+
+                else if (game.thisPlayer.direction == 3 && locx > 0) locx--;
+                else
+                    break;
+
+                foreach (Player p in game.players)
+                    if (p.x == locx && p.y == locy && p.health > 0 && p.name != game.thisPlayer.name && p.name != null && p.name[0] == 'P') return Constant.SHOOT;
+               // Console.WriteLine(locx + " " + locy);
             }
 
 

@@ -30,6 +30,7 @@ namespace GameClientXNA.Game.AI
                 networkClient.Send(message);
                 isMsgSent = true;
             }
+
         }
 
         public void setMessage(String msg)

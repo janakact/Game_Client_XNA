@@ -78,6 +78,7 @@ namespace GameClientXNA
             //Keyboard Dispatcher
             keyboard_dispatcher = new KeyboardDispatcher(this.Window);
 
+            Constant.Load();
 
             base.Initialize();
         }
@@ -95,7 +96,7 @@ namespace GameClientXNA
 
             // TODO: use this.Content to load your game content here
             //Load from configurations
-            Constant.Load();
+            //Constant.Load();
 
             font = Content.Load<SpriteFont>("font");
 

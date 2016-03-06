@@ -71,7 +71,7 @@ namespace GameClientXNA
             {
                 // Set the listener on the local IP address 
                 // and specify the port.
-                tcpListener = new TcpListener(ipAddress, listenPort);
+                tcpListener = new TcpListener(IPAddress.Any, listenPort);
                 tcpListener.Start();
                 thread = new Thread(new ThreadStart(Recieve));
                 recieving = true;
